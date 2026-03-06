@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { View, Image } from "react-native";
+import images from "../../constant/images";
 
 const SplashScreen = ({ navigation }: any) => {
 
@@ -13,12 +14,12 @@ const SplashScreen = ({ navigation }: any) => {
 
   return (
     <View className="flex-1 justify-center items-center bg-white">
-      <Image
-        source={require("../../Assets/Images/olilitLogo.png")}
-        className="w-45 h-40"
-        resizeMode="contain"
-      />
-    </View>
+          <Image
+      source={images.logo}
+      className="w-45 h-40"
+      resizeMode="contain"
+    />
+    </View> 
     
   );
 };

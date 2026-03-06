@@ -1,5 +1,9 @@
 import React,{useState} from "react";
+import  images  from "../../constant/images";
 import Ionicons from "react-native-vector-icons/Ionicons";
+
+
+
 import {View,Text,Image,TextInput,Pressable,SafeAreaView,KeyboardAvoidingView,Platform,ActivityIndicator,
 } from "react-native";
 
@@ -65,7 +69,7 @@ export default function Login() {
           <View className="items-center pt-6">
 
             <Image
-              source={require("../../Assets/Images/olilitLogo.png")}
+              source ={images.logo}
               className="w-[60%] max-w-[215px] h-[51px] mb-10"
               resizeMode="contain"/>
 
@@ -90,38 +94,38 @@ export default function Login() {
                 {errors.email && (
                   <Text className="text-red-600 text-[12px] mt-1">
                     {errors.email}
-                  </Text>
+                  </Text> 
                 )}
               </View>
 
-             <View>
-  <Text className="font-jakarta-medium mb-2">
-    Password
-  </Text>
+                      <View>
+            <Text className="font-jakarta-medium mb-2">
+              Password
+            </Text>
 
-  <View className="bg-gray-200 border border-gray-300 h-[60px] rounded-2xl px-4 w-full flex-row items-center">
-    <TextInput
-      placeholder="Enter password"
-      secureTextEntry={!showPassword}
-      value={password}
-      onChangeText={setPassword}
-      className="flex-1"
-    />
-    <Pressable onPress={() => setShowPassword(!showPassword)}>
-      <Ionicons
-        name={showPassword ? "eye-off" : "eye"}
-        size={20}
-        color="gray"
-      />
-    </Pressable>
-  </View>
+              <View className="bg-gray-200 border border-gray-300 h-[60px] rounded-2xl px-4 w-full flex-row items-center">
+                <TextInput
+                  placeholder="Enter password"
+                  secureTextEntry={!showPassword}
+                  value={password}
+                  onChangeText={setPassword}
+                  className="flex-1"
+                />
+                <Pressable onPress={() => setShowPassword(!showPassword)}>
+                  <Ionicons
+                    name={showPassword ? "eye-off" : "eye"}
+                    size={20}
+                    color="gray"
+                  />
+                </Pressable>
+              </View>
 
-  {errors.password && (
-    <Text className="text-red-600 text-[12px] mt-1">
-      {errors.password}
-    </Text>
-  )}
-</View>
+              {errors.password && (
+                <Text className="text-red-600 text-[12px] mt-1">
+                  {errors.password}
+                </Text>
+              )}
+            </View>
 
               <View className="items-end">
                 <Text className="font-jakarta-medium text-[#638A2D]">
@@ -133,12 +137,12 @@ export default function Login() {
               onPress={handleLogin}
               disabled = {isLoading}>
                {isLoading ? (
-  <ActivityIndicator color="white" size="small" />
-) : (
-  <Text className="text-white text-[16px] font-jakarta-semibold">
-    Login
-  </Text>
-)}
+              <ActivityIndicator color="white" size="small" />
+            ) : (
+              <Text className="text-white text-[16px] font-jakarta-semibold">
+                Login
+              </Text>
+            )}
               </Pressable>
 
             </View>
@@ -150,7 +154,7 @@ export default function Login() {
             </Text>
 
             <Image
-              source={require("../../Assets/Images/legalsynq.png")}
+              source = {images.legalSync}
               className="w-[40%] max-w-[120px] h-[30px] mb-3"
               resizeMode="contain"/>
 
