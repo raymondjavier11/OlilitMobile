@@ -9,6 +9,7 @@ import Payouts from '../screens/payout/Payout';
 import PayoutsDetails from '../screens/payout/PayoutsDetails';
 
 
+
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
@@ -19,7 +20,7 @@ const AppNavigator = () => {
           <Stack.Screen name='PayoutsDetails' component={PayoutsDetails}/>
           <Stack.Screen name='Splash' component={SplashScreen}/> 
           <Stack.Screen name='Login' component={Login}/>
-          <Stack.Screen name='DashBoard' component={DashBoard}/>
+          <Stack.Screen name='DashBoard' component={DashBoard}/>    
       </Stack.Navigator>
     </NavigationContainer>
   )
