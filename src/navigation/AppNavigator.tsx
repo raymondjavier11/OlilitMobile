@@ -3,12 +3,17 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { View, Text } from 'react-native';
+
 import SplashScreen from '../screens/splash/SplashScreen';
 import Login from '../screens/auth/Login';
 import DashBoard from '../screens/dashboard/DashBoard';
 import Payouts from '../screens/payout/Payout';
 import PayoutsDetails from '../screens/payout/PayoutsDetails';
+import ApproveComplete from '../screens/payout/ApproveComplete';
+import RejectComplete from '../screens/payout/RejectComplete';
+
 import BottomNavBar from '../components/BottomNavBar';
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -45,7 +50,6 @@ const AppNavigator = () => (
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Main" component={MainTabNavigator} />
       <Stack.Screen name="PayoutsDetails" component={PayoutsDetails} />
-      
     </Stack.Navigator>
   </NavigationContainer>
 );
