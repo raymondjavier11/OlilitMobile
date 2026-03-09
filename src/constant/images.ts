@@ -4,8 +4,9 @@ const images = {
   rightArrow: require("../Assets/Images/rightArrow.png"),
   leftArrow: require("../Assets/Images/leftArrow.png"),
   filterIcon: require("../Assets/Images/filterIcon.png"),
-  searchIcon: require("../Assets/Images/searchIcon.png")
-
+  searchIcon: require("../Assets/Images/searchIcon.png"),
+  checkIcon: require ("../Assets/Images/checkIcon.png"),
+  exIcon: require ("../Assets/Images/exIcon.png")
 };
 
 export default images;  

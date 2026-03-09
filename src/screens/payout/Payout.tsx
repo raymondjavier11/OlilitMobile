@@ -1,10 +1,12 @@
-import { View, Text, Image, TextInput, FlatList } from 'react-native'
+import { View, Text, Image, TextInput, FlatList, Pressable } from 'react-native'
 import React from 'react'
 import PayoutCard from './PayoutCard'
 import images from '../../constant/images'
+import { useState } from 'react'
+
 
 export default function Payouts() {
-
+const [showApproveModal, setShowApproveModal] = useState(false);
   const payouts = [
     {
       name: "Choi, Kenneth",
@@ -55,6 +57,7 @@ export default function Payouts() {
       date: "2025-05-19 03:31:11 PM",
     },
     
+    
   ]
 
   return (
@@ -88,7 +91,8 @@ export default function Payouts() {
             <PayoutCard name={item.name} id={item.id} type={item.type}
             status={item.status} value={item.value} date={item.date}/>
         )}
-        contentContainerStyle={{ gap: 10, paddingTop: 5}}/>
+        contentContainerStyle={{ gap: 10, paddingTop: 5}}
+        showsVerticalScrollIndicator={false}/>
 
     </View>
   )
