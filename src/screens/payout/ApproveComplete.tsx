@@ -1,6 +1,7 @@
 import { View, Text, Pressable, Image } from "react-native";
 import React from "react";
 import images from "../../constant/images";
+
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
