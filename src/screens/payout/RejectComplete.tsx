@@ -11,8 +11,11 @@ type RootStackParamList = {
     date: string;
     transactionId: string;
   };
-  DashBoard: undefined;
+  Main: {
+    screen: "DashBoard";
+  };
 };
+
 
 type RouteProps = RouteProp<RootStackParamList, "ApproveComplete">;
 
@@ -87,7 +90,8 @@ export default function RejectComplete() {
       </View>
 
       <Pressable
-        onPress={() => navigation.navigate("DashBoard")}
+        onPress={() =>
+          navigation.navigate("Main", {screen: "DashBoard",})}
         className="bg-[#8BC240] rounded-[16px] p-[16px] items-center mt-auto mb-[30px]">
         <Text className="font-jakarta-medium text-[#FFFFFF]">
           Back To Home
