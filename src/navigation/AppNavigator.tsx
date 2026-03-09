@@ -1,4 +1,3 @@
-
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
@@ -7,7 +6,6 @@ import DashBoard from '../screens/dashboard/DashBoard';
 import Login from '../screens/auth/Login';
 import Payouts from '../screens/payout/Payout';
 import PayoutsDetails from '../screens/payout/PayoutsDetails';
-
 
 
 const Stack = createNativeStackNavigator();
