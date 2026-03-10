@@ -11,6 +11,10 @@ import Payouts from '../screens/payout/Payout';
 import PayoutsDetails from '../screens/payout/PayoutsDetails';
 import ApproveComplete from '../screens/payout/ApproveComplete';
 import RejectComplete from '../screens/payout/RejectComplete';
+import More from '../screens/more/More';
+import Users from '../screens/more/Users';
+import UserDetails from '../screens/more/UserDetails';
+import Company from '../screens/more/Company';
 
 import BottomNavBar from '../components/BottomNavBar';
 
@@ -34,18 +38,18 @@ const MainTabNavigator = () => (
   <Tab.Navigator
     tabBar={(props) => <BottomNavBar {...props} />}
     screenOptions={{ headerShown: false }}
-    initialRouteName="DashBoard"
-  >
+    initialRouteName="DashBoard">
     <Tab.Screen name="Deals" component={DealsPlaceholder} />
     <Tab.Screen name="Payouts" component={Payouts} />
     <Tab.Screen name="DashBoard" component={DashBoard} />
-    <Tab.Screen name="More" component={MorePlaceholder} />
+    <Tab.Screen name="More" component={More} />
   </Tab.Navigator>
 );
 
 const AppNavigator = () => (
   <NavigationContainer>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Company" component={Company} />
       <Stack.Screen name="Splash" component={SplashScreen} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Main" component={MainTabNavigator} />
@@ -53,6 +57,8 @@ const AppNavigator = () => (
       <Stack.Screen name='ApproveComplete' component={ApproveComplete}/>
       <Stack.Screen name='RejectComplete' component={RejectComplete}/>
       <Stack.Screen name='DashBoard' component={DashBoard}/>
+      <Stack.Screen name="Users" component={Users} />
+      <Stack.Screen name="UserDetails" component={UserDetails} />
     </Stack.Navigator>
   </NavigationContainer>
 );

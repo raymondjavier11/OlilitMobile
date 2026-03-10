@@ -55,15 +55,13 @@ const [showApproveModal, setShowApproveModal] = useState(false);
       status: "Issued",
       value: "$40,000.00",
       date: "2025-05-19 03:31:11 PM",
-    },
-    
-    
+    },  
   ]
 
   return (
     <View className="flex-1 px-[25px] gap-3">
 
-      <View className="flex-row justify-between items-center h-[44px] mt-11">
+      <View className="flex-row justify-between items-center h-[44px] mt-12">
         <Text className="text-[20px] font-jakarta-bold">
           Payouts
         </Text>

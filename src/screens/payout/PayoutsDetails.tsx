@@ -53,7 +53,7 @@ export default function PayoutsDetails() {
     value: "Visa - 0006",
   },
   {
-    label: "Issuer",
+    label: "Issued",
     value: "INTL HDQTRS-CENTER OWNED",
   },
   {
@@ -135,7 +135,7 @@ export default function PayoutsDetails() {
   return (
     <View className="flex-1 px-[25px]">
       
-      <View className="flex-row items-center mt-[44px]">
+      <View className="flex-row items-center mt-12">
 
         <Pressable
           onPress={() => navigation.goBack()}
@@ -158,6 +158,7 @@ export default function PayoutsDetails() {
   <ScrollView
     showsVerticalScrollIndicator={false}
     contentContainerStyle={{ paddingBottom: 120 }}>
+      
       <View
         className="bg-white rounded-[16px] border border-[#F4F4F4] px-[20px] py-[16px] mt-[16px]"
         style={{ shadowColor: "#888", shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.05,
@@ -184,12 +185,13 @@ export default function PayoutsDetails() {
           <Text className="font-jakarta text-[12px]">Claim Created</Text>
         </View>                       
 
-        <Text className="font-jakarta-medium text-[14px] pb-[5px]">Phone Number</Text>
-            <View className=" h-[60px] bg-[#eeecec] rounded-[16px] flex-row items-center px-4 gap-2">
-                <TextInput placeholder="(252)123 - 1231"
-                    className="flex-1 text-[16px] font-jakarta-bold text-[#121112]"/>
-                <Image className="w-5 h-5"/>
-            </View>
+          <Text className="font-jakarta-medium text-[14px] pb-[5px]">Phone Number</Text>
+
+        <View className=" h-[60px] bg-[#eeecec] rounded-[16px] flex-row items-center px-4 gap-2">
+            <TextInput placeholder="(252)123 - 1231"
+                className="flex-1 text-[16px] font-jakarta-bold text-[#121112]"/>
+            <Image className="w-5 h-5"/>
+        </View>
       </View>
 
       <View
@@ -248,7 +250,7 @@ export default function PayoutsDetails() {
 
         </View>
       </View>
-      </ScrollView>
+  </ScrollView>
 
        <View className="absolute bottom-0 left-0 right-0 px-[25px] pt-[12px] pb-[30px] bg-white border-t border-[#F0F0F0] flex-row gap-[12px]">
       
@@ -265,6 +267,7 @@ export default function PayoutsDetails() {
                 Approve
               </Text>
           </Pressable>
+
        </View>
 
        <Modal visible={showApproveModal} transparent animationType="slide">
@@ -298,7 +301,9 @@ export default function PayoutsDetails() {
               </Pressable>
 
             </View>
+
           </View>
+
         </Modal>
 
         <Modal visible={showApproveModals} transparent animationType="slide">
@@ -332,8 +337,11 @@ export default function PayoutsDetails() {
                   Cancel
                 </Text>
               </Pressable>
+
             </View>
+
           </View>
+
         </Modal>
 
     </View>

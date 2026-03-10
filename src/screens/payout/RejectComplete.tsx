@@ -30,7 +30,7 @@ export default function RejectComplete() {
   return (
     <View className="flex-1 px-[25px]">
       
-      <View className="flex-row items-center mt-[44px]">
+      <View className="flex-row items-center mt-12">
         <Pressable
           onPress={() => navigation.goBack()}
           className="w-[44px] h-[44px] rounded-full bg-[#f3f2f2] justify-center items-center">
@@ -90,9 +90,8 @@ export default function RejectComplete() {
       </View>
 
       <Pressable
-        onPress={() =>
-          navigation.navigate("Main", {screen: "DashBoard",})}
-        className="bg-[#8BC240] rounded-[16px] p-[16px] items-center mt-auto mb-[30px]">
+          onPress={() => navigation.navigate("Main", {screen: "DashBoard",})}
+          className="bg-[#8BC240] rounded-[16px] p-[16px] items-center mt-auto mb-[30px]">
         <Text className="font-jakarta-medium text-[#FFFFFF]">
           Back To Home
         </Text>
