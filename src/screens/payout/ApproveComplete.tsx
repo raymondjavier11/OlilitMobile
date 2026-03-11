@@ -1,7 +1,7 @@
 import { View, Text, Pressable, Image } from "react-native";
 import React from "react";
 import images from "../../constant/images";
-
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
@@ -28,9 +28,10 @@ export default function ApproveComplete() {
   const navigation = useNavigation<NavigationProps>();
 
   return (
-    <View className="flex-1 px-[25px]">
+    <SafeAreaView className="flex-1 bg-white ">
+    <View className="flex-1 px-[25px] mt-3">
       
-      <View className="flex-row items-center mt-12">
+      <View className="flex-row items-center ">
         <Pressable
           onPress={() => navigation.goBack()}
           className="w-[44px] h-[44px] rounded-full bg-[#f3f2f2] justify-center items-center">
@@ -99,5 +100,6 @@ export default function ApproveComplete() {
       </Pressable>
 
     </View>
+    </SafeAreaView>
   );
 }

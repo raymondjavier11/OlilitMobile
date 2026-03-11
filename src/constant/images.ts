@@ -11,7 +11,10 @@ const images = {
   contacts: require("../Assets/Images/contacts.png"),
   user: require("../Assets/Images/user.png"),
   company: require("../Assets/Images/company.png"),
-  personIcon: require("../Assets/Images/personIcon.png")
+  personIcon: require("../Assets/Images/personIcon.png"),
+  calendarIcon: require("../Assets/Images/calendarIcon.png"),
+  locationIcon: require("../Assets/Images/locationIcon.png"),
+  phoneIcon: require("../Assets/Images/phoneIcon.png"),
 };
 
 export default images;  

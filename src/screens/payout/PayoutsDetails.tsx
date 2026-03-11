@@ -6,6 +6,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ScrollView } from "react-native";
 import { Modal } from "react-native";
 import { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type RootStackParamList = {
   PayoutsDetails: {
@@ -133,9 +134,11 @@ export default function PayoutsDetails() {
   };
 
   return (
-    <View className="flex-1 px-[25px]">
+
+    <SafeAreaView className="flex-1 bg-white ">
+    <View className="flex-1 px-[25px] mt-3">
       
-      <View className="flex-row items-center mt-12">
+      <View className="flex-row items-center ">
 
         <Pressable
           onPress={() => navigation.goBack()}
@@ -345,5 +348,6 @@ export default function PayoutsDetails() {
         </Modal>
 
     </View>
+    </SafeAreaView>
   );
 }

@@ -15,6 +15,7 @@ import More from '../screens/more/More';
 import Users from '../screens/more/Users';
 import UserDetails from '../screens/more/UserDetails';
 import Company from '../screens/more/Company';
+import CaseDetails from '../screens/more/CaseDetails';
 
 import BottomNavBar from '../components/BottomNavBar';
 
@@ -49,7 +50,6 @@ const MainTabNavigator = () => (
 const AppNavigator = () => (
   <NavigationContainer>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Company" component={Company} />
       <Stack.Screen name="Splash" component={SplashScreen} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Main" component={MainTabNavigator} />
@@ -59,6 +59,8 @@ const AppNavigator = () => (
       <Stack.Screen name='DashBoard' component={DashBoard}/>
       <Stack.Screen name="Users" component={Users} />
       <Stack.Screen name="UserDetails" component={UserDetails} />
+      <Stack.Screen name="Company" component={Company} />
+      <Stack.Screen name="CaseDetails" component={CaseDetails} />
     </Stack.Navigator>
   </NavigationContainer>
 );

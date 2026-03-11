@@ -3,6 +3,7 @@ import React from 'react'
 import images from "../../constant/images";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type RootStackParamList = {
   Home: undefined;
@@ -16,7 +17,8 @@ export default function More() {
   const navigation = useNavigation<NavigationProp>();
 
   return (
-    <View className='mt-12 px-[25px]'>
+    <SafeAreaView className="flex-1 bg-white ">
+    <View className='px-[25px] mt-5'>
 
         <Text className='font-jakarta-bold text-[20px]'>More</Text>
     
@@ -62,5 +64,6 @@ export default function More() {
       </View>
 
     </View>
+    </SafeAreaView>
   )
 }

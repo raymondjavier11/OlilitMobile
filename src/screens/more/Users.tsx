@@ -4,6 +4,7 @@ import images from "../../constant/images";
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type RootStackParamList = {
   Users: undefined;
@@ -30,9 +31,9 @@ export default function Users() {
     ];
 
   return (
-
+    <SafeAreaView className="flex-1 bg-white ">
     <View className='px-[24px]'>
-      <View className="flex-row items-center mt-12 px-[24px]">
+      <View className="flex-row items-center mt-6 px-[24px]">
 
         <Pressable onPress={() => navigation.goBack()}
             className="w-[44px] h-[44px] rounded-full bg-[#f3f2f2] justify-center items-center">
@@ -83,5 +84,6 @@ export default function Users() {
         </ScrollView>
 
     </View>
+    </SafeAreaView>
   )
 }
