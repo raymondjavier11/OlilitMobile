@@ -8,7 +8,7 @@ import {
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import Svg, { Path, Rect, Circle, Line } from 'react-native-svg';
 
-// ─── Icons ────────────────────────────────────────────────────────────────────
+// ─── Icons ─
 const DealsIcon = ({ color }: { color: string }) => (
   <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
     <Path
@@ -59,7 +59,7 @@ const TAB_ICONS: Record<string, (color: string) => JSX.Element> = {
 const ACTIVE_COLOR   = '#2DC653';
 const INACTIVE_COLOR = '#A0A8B0';
 
-// ─── Component ────────────────────────────────────────────────────────────────
+// ─── Component ──────
 const BottomNavBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigation }) => {
   return (
     <View
