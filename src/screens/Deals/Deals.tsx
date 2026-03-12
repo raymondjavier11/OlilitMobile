@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, Image, TextInput, TouchableOpacity, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Svg, { Path, Circle, Line, Polyline } from "react-native-svg";
+import Svg, { Path, Line, Polyline } from "react-native-svg";
 
-// ─── Types (data models only) ─────────────────────────────────────────────────
+
 
 type OverviewStat = {
   id: string;
@@ -24,15 +24,19 @@ type CaseItem = {
   stageTime: string;
 };
 
-// ─── Assets ───────────────────────────────────────────────────────────────────
+
 
 const images = {
   logo:       require("../../Assets/Images/olilitLogo.png"),
   filterIcon: require("../../Assets/Images/filterIcon.png"),
   searchIcon: require("../../Assets/Images/searchIcon.png"),
+  Notif: require("../../Assets/Images/Notification.png"),
+  gcheck: require("../../Assets/Images/gcheck.png"),
+  check: require("../../Assets/Images/check.png"),
+
+  
 };
 
-// ─── Mock Data ────────────────────────────────────────────────────────────────
 
 const overviewStats: OverviewStat[] = [
   { id: "1", label: "Totals",         count: 135, amount: "$135,100.00" },
@@ -87,7 +91,7 @@ const recentCases: CaseItem[] = [
   },
 ];
 
-// ─── Helper ───────────────────────────────────────────────────────────────────
+
 
 const getStatusColor = (status: string) => {
   if (status === "Rejected")     return "#E14D4D";
@@ -97,22 +101,16 @@ const getStatusColor = (status: string) => {
   return "#898989";
 };
 
-// ─── Components ───────────────────────────────────────────────────────────────
 
 const Header = () => (
   <View className="flex-row items-center justify-between bg-white px-4 py-3 border-b border-[#E0E0E0]">
     <Image source={images.logo} style={{ height: 36, width: 140 }} resizeMode="contain" />
     <View className="flex-row items-center gap-x-1">
       <TouchableOpacity className="p-2">
-        <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
-          <Path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"
-            stroke="#374151" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-          <Path d="M13.73 21a2 2 0 0 1-3.46 0"
-            stroke="#374151" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-        </Svg>
+        <Image source={images.Notif} style={{ width: 30, height: 30 }} resizeMode="contain" />
       </TouchableOpacity>
       <TouchableOpacity className="p-2">
-        <Image source={images.filterIcon} style={{ width: 22, height: 22 }} resizeMode="contain" />
+        <Image source={images.filterIcon} style={{ width: 18, height: 18 }} resizeMode="contain" />
       </TouchableOpacity>
     </View>
   </View>
@@ -123,13 +121,12 @@ const OverviewCard = ({ item }: { item: OverviewStat }) => (
     className="bg-white rounded-xl p-3.5 w-40 mr-3"
     style={{ elevation: 2, shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 4 }}>
     <View className="flex-row items-center gap-x-1.5 mb-2.5">
-      <Svg width={15} height={15} viewBox="0 0 24 24" fill="none">
-        <Path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"
-          stroke="#15803D" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-        <Polyline points="22 4 12 14.01 9 11.01"
-          stroke="#15803D" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-      </Svg>
-      <Text className="text-xs font-semibold text-[#212121] flex-shrink">{item.label}</Text>
+      {item.label === "Ready To Funds" ? (
+        <Image source = {images.gcheck} style={{ width: 20, height: 20 }} resizeMode="contain" />
+      ) : (
+        <Image source = {images.check} style={{ width: 20, height: 20 }} resizeMode="contain" />
+      )}
+      <Text className="text-xs font-semibold text-[#b73030] flex-shrink">{item.label}</Text>
     </View>
     <View className="flex-row justify-between mb-1">
       <Text className="text-xs text-[#757575]">Count:</Text>
@@ -147,7 +144,7 @@ const CaseCard = ({ item }: { item: CaseItem }) => (
     className="bg-white rounded-2xl p-4 mb-3.5"
     style={{ elevation: 2, shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.07, shadowRadius: 5 }}>
 
-    {/* Client + Amount */}
+  
     <View className="flex-row justify-between items-start mb-2.5">
       <View>
         <Text className="text-base font-bold text-[#212121]">{item.clientName}</Text>
@@ -156,7 +153,7 @@ const CaseCard = ({ item }: { item: CaseItem }) => (
       <Text className="text-lg font-bold text-[#2E7D32]">{item.amount}</Text>
     </View>
 
-    {/* Tags */}
+
     <View className="flex-row flex-wrap gap-1.5 mb-2.5">
       {item.tags.map((tag) => (
         <View key={tag} className="border border-[#E0E0E0] rounded-full px-2.5 py-0.5">
@@ -165,7 +162,7 @@ const CaseCard = ({ item }: { item: CaseItem }) => (
       ))}
     </View>
 
-    {/* Status */}
+   
     <View className="flex-row items-center gap-x-2 mb-3">
       <Text className="text-sm text-[#757575]">Status:</Text>
       <View style={{ backgroundColor: getStatusColor(item.status) }} className="rounded-full px-3 py-1">
@@ -173,10 +170,10 @@ const CaseCard = ({ item }: { item: CaseItem }) => (
       </View>
     </View>
 
-    {/* Divider */}
+    
     <View className="h-px bg-[#E0E0E0] mb-3" />
 
-    {/* Dates */}
+   
     <View className="flex-row justify-between mb-1.5">
       <Text className="text-sm text-[#757575]">Date of Loss</Text>
       <Text className="text-sm font-medium text-[#212121]">{item.dateOfLoss}</Text>
@@ -190,7 +187,7 @@ const CaseCard = ({ item }: { item: CaseItem }) => (
       <Text className="text-sm font-medium text-[#212121]">{item.stageTime}</Text>
     </View>
 
-    {/* View Case Button */}
+  
     <TouchableOpacity
       className="mt-3.5 border-2 border-[#2E7D32] rounded-xl py-3 flex-row items-center justify-center gap-x-2"
       activeOpacity={0.75}>
@@ -204,7 +201,7 @@ const CaseCard = ({ item }: { item: CaseItem }) => (
   </View>
 );
 
-// ─── Main Screen ──────────────────────────────────────────────────────────────
+
 
 export default function Deals() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -216,7 +213,7 @@ export default function Deals() {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-[#F5F5F5]">
+    <SafeAreaView className="flex-1 bg-white">
 
       <Header />
 

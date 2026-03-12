@@ -18,6 +18,9 @@ const images = {
   gearPersonIcon: require("../Assets/Images/gearPersonIcon.png"),
   girlIcon: require("../Assets/Images/girlIcon.png"),
   planeIcon: require("../Assets/Images/planeIcon.png"),
+  Notif: require("../Assets/Images/Notification.png"),
+  Gcheck: require("../Assets/Images/gcheck.png"),
+  check: require("../Assets/Images/check.png"),
 };
 
 export default images;  
