@@ -15,6 +15,9 @@ const images = {
   calendarIcon: require("../Assets/Images/calendarIcon.png"),
   locationIcon: require("../Assets/Images/locationIcon.png"),
   phoneIcon: require("../Assets/Images/phoneIcon.png"),
+  gearPersonIcon: require("../Assets/Images/gearPersonIcon.png"),
+  girlIcon: require("../Assets/Images/girlIcon.png"),
+  planeIcon: require("../Assets/Images/planeIcon.png"),
 };
 
 export default images;  
