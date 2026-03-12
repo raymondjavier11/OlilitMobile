@@ -2,10 +2,21 @@ import { View, Text, Image, Pressable, TextInput, ScrollView } from "react-nativ
 import { useNavigation } from "@react-navigation/native";
 import images from "../../constant/images";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+type RootStackParamList = {
+  CaseDetails: {
+    name: string;
+    phone: string;
+    address: string;
+  };
+};
 
 export default function Company() {
 
-  const navigation = useNavigation();
+  type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
+  const navigation = useNavigation<NavigationProp>();
 
   const companies = [
     {
@@ -128,7 +139,9 @@ export default function Company() {
               </Text>
             </View>
 
-            <Pressable className="rounded-[16px] bg-[#FFFFFF] border border-[#8BC240] px-[20px] py-[16px] items-center mt-6">
+            <Pressable onPress={() => navigation.navigate("CaseDetails", {
+                  name: company.name, phone: company.phone, address: company.address, })}
+              className="rounded-[16px] bg-[#FFFFFF] border border-[#8BC240] px-[20px] py-[16px] items-center mt-6">
               <Text className="text-[#8BC240] font-jakarta-medium">
                 View Details
               </Text>

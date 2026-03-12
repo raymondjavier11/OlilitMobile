@@ -50,6 +50,8 @@ const MainTabNavigator = () => (
 const AppNavigator = () => (
   <NavigationContainer>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="More" component={More} />
+      <Stack.Screen name="CaseDetails" component={CaseDetails} />
       <Stack.Screen name="Splash" component={SplashScreen} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Main" component={MainTabNavigator} />
@@ -60,7 +62,7 @@ const AppNavigator = () => (
       <Stack.Screen name="Users" component={Users} />
       <Stack.Screen name="UserDetails" component={UserDetails} />
       <Stack.Screen name="Company" component={Company} />
-      <Stack.Screen name="CaseDetails" component={CaseDetails} />
+
     </Stack.Navigator>
   </NavigationContainer>
 );

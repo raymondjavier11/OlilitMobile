@@ -5,9 +5,11 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+
 type RootStackParamList = {
   Home: undefined;
   Users: undefined;
+  Company: undefined;
 };
 
 export default function More() {
@@ -15,6 +17,7 @@ export default function More() {
   type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
   const navigation = useNavigation<NavigationProp>();
+
 
   return (
     <SafeAreaView className="flex-1 bg-white ">
@@ -38,7 +41,7 @@ export default function More() {
             <View className="p-[24px] border border-[#F4F4F4] bg-[#FFFFFF] rounded-[8px]"
                   style={{ shadowColor: "#888", shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.05, shadowRadius: 10, elevation: 4,}}>
           
-                <Pressable>
+                <Pressable onPress={() => navigation.navigate("Company")}>
                 <Image source={images.company} className="w-[28.13px] h-[16.75px]" resizeMode="contain" />
                 </Pressable>
             </View>
