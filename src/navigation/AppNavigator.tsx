@@ -16,6 +16,7 @@ import Users from '../screens/more/Users';
 import UserDetails from '../screens/more/UserDetails';
 import Company from '../screens/more/Company';
 import CaseDetails from '../screens/more/CaseDetails';
+import Deals from '../screens/Deals/Deals';
 
 import BottomNavBar from '../components/BottomNavBar';
 
@@ -40,7 +41,7 @@ const MainTabNavigator = () => (
     tabBar={(props) => <BottomNavBar {...props} />}
     screenOptions={{ headerShown: false }}
     initialRouteName="DashBoard">
-    <Tab.Screen name="Deals" component={DealsPlaceholder} />
+    <Tab.Screen name="Deals" component={Deals} />
     <Tab.Screen name="Payouts" component={Payouts} />
     <Tab.Screen name="DashBoard" component={DashBoard} />
     <Tab.Screen name="More" component={More} />
@@ -57,7 +58,10 @@ const AppNavigator = () => (
       <Stack.Screen name='ApproveComplete' component={ApproveComplete}/>
       <Stack.Screen name='RejectComplete' component={RejectComplete}/>
       <Stack.Screen name='DashBoard' component={DashBoard}/>
+      <Stack.Screen name='Deals' component={Deals}/>
       <Stack.Screen name="Users" component={Users} />
+       <Stack.Screen name="More" component={More} />
+      <Stack.Screen name="CaseDetails" component={CaseDetails} />
       <Stack.Screen name="UserDetails" component={UserDetails} />
       <Stack.Screen name="Company" component={Company} />
       <Stack.Screen name="More" component={More} />
