@@ -11,6 +11,7 @@ type RootStackParamList = {
     name: string;
     phone: string;
     address: string;
+    type: string;
   };
 };
 
@@ -20,7 +21,7 @@ export default function CaseDetails() {
 
   const navigation = useNavigation();
   const route = useRoute<RouteProps>();
-  const { name, phone, address } = route.params;
+  const { name, phone, address,type } = route.params;
 
   const sectionPositions = useRef({
   general: 0,
@@ -194,7 +195,7 @@ const handleAddNote = () => {
                 <View className="flex-row items-center gap-2 rounded-[12px] bg-[#8BC2401A] p-[8px]">
                 <Image className="w-[10px] h-[10px]" source={images.company} />
                 <Text className="font-jakarta-medium text-[10px]">
-                    Company Type
+                    {type}
                 </Text>
                 </View>
             </View>     

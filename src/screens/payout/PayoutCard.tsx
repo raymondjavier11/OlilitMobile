@@ -53,7 +53,7 @@ export default function PayoutCard({
       <View
         className="h-[167px] bg-white rounded-[16px] border border-[#F4F4F4] px-[20px] py-[16px] mt-2"
         style={{ shadowColor: "#888", shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.05,
-          shadowRadius: 10,elevation: 8,}}>
+          shadowRadius: 10,elevation: 5,}}>
         <Text className="font-jakarta-semibold text-[12px]">{name}</Text>
         <Text className="font-jakarta text-[12px]">{id}</Text>
         <Text className="font-jakarta text-[12px]">{type}</Text>
