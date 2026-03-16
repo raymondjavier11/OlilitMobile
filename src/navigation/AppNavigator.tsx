@@ -18,6 +18,8 @@ import Company from '../screens/more/Company';
 import CaseDetails from '../screens/more/CaseDetails';
 import Deals from '../screens/Deals/Deals';
 import DealsCaseDetails from '../screens/Deals/CaseDetails';
+import Contacts from '../screens/more/Contacts';
+import ContactsDetails from '../screens/more/ContactsDetails';
 
 
 
@@ -51,15 +53,13 @@ const AppNavigator = () => (
       <Stack.Screen name='ApproveComplete' component={ApproveComplete}/>
       <Stack.Screen name='RejectComplete' component={RejectComplete}/>
       <Stack.Screen name='DashBoard' component={DashBoard}/>
-      
       <Stack.Screen name="Users" component={Users} />
-       <Stack.Screen name="More" component={More} />
-      
+      <Stack.Screen name="More" component={More} />
       <Stack.Screen name="UserDetails" component={UserDetails} />
       <Stack.Screen name="Company" component={Company} />
-<Stack.Screen name="DealsCaseDetails" component={DealsCaseDetails} />
-
-
+      <Stack.Screen name="DealsCaseDetails" component={DealsCaseDetails} />
+      <Stack.Screen name="Contacts" component={Contacts} /> 
+      <Stack.Screen name="ContactsDetails" component={ContactsDetails} />
       <Stack.Screen name="CaseDetails" component={CaseDetails} />
       
     </Stack.Navigator>
