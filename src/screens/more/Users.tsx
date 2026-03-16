@@ -53,14 +53,14 @@ export default function Users() {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}
-      className="mt-[30px]">
+        className="mt-[30px]">
 
         {users.map((user) => (
         <Pressable
             key={user.id}
             
             onPress={() => navigation.navigate("UserDetails", { name: user.name })}
-            className="flex-row items-center px-[20px] bg-[#FFFFFF] 
+            className="flex-row items-center border px-[20px] bg-[#FFFFFF] 
             border-[#F4F4F4] rounded-[16px] py-[20px] mb-[20px]"
             style={{ shadowColor: "#888", shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.05,
              shadowRadius: 10,elevation: 5,}}>
@@ -77,13 +77,12 @@ export default function Users() {
                 </Text>
 
                 <Image
-                    source={images.rightArrow}
-                    className="w-[6px] h-[12px]"/>
+                    source={images.rightArrow} className="w-[6px] h-[12px]"/>
 
         </Pressable>))}
-        </ScrollView>
+      </ScrollView>
 
-    </View>
+     </View>
     </SafeAreaView>
   )
 }
