@@ -17,24 +17,16 @@ import UserDetails from '../screens/more/UserDetails';
 import Company from '../screens/more/Company';
 import CaseDetails from '../screens/more/CaseDetails';
 import Deals from '../screens/Deals/Deals';
+import DealsCaseDetails from '../screens/Deals/CaseDetails';
+
+
+
 
 import BottomNavBar from '../components/BottomNavBar';
 
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-
-const DealsPlaceholder = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F8F9FA' }}>
-    <Text style={{ fontSize: 18, color: '#666' }}>Deals - Coming Soon</Text>
-  </View>
-);
-
-const MorePlaceholder = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F8F9FA' }}>
-    <Text style={{ fontSize: 18, color: '#666' }}>More</Text>
-  </View>
-);
 
 const MainTabNavigator = () => (
   <Tab.Navigator
@@ -51,6 +43,7 @@ const MainTabNavigator = () => (
 const AppNavigator = () => (
   <NavigationContainer>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
+   
       <Stack.Screen name="Splash" component={SplashScreen} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Main" component={MainTabNavigator} />
@@ -58,14 +51,17 @@ const AppNavigator = () => (
       <Stack.Screen name='ApproveComplete' component={ApproveComplete}/>
       <Stack.Screen name='RejectComplete' component={RejectComplete}/>
       <Stack.Screen name='DashBoard' component={DashBoard}/>
-      <Stack.Screen name='Deals' component={Deals}/>
+      
       <Stack.Screen name="Users" component={Users} />
        <Stack.Screen name="More" component={More} />
-      <Stack.Screen name="CaseDetails" component={CaseDetails} />
+      
       <Stack.Screen name="UserDetails" component={UserDetails} />
       <Stack.Screen name="Company" component={Company} />
-      <Stack.Screen name="More" component={More} />
+<Stack.Screen name="DealsCaseDetails" component={DealsCaseDetails} />
+
+
       <Stack.Screen name="CaseDetails" component={CaseDetails} />
+      
     </Stack.Navigator>
   </NavigationContainer>
 );

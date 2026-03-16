@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, Image, TextInput, TouchableOpacity, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Svg, { Path, Line, Polyline } from "react-native-svg";
-
+import images from "../../constant/images";
 
 
 type OverviewStat = {
@@ -24,18 +26,24 @@ type CaseItem = {
   stageTime: string;
 };
 
-
-
-const images = {
-  logo:       require("../../Assets/Images/olilitLogo.png"),
-  filterIcon: require("../../Assets/Images/filterIcon.png"),
-  searchIcon: require("../../Assets/Images/searchIcon.png"),
-  Notif: require("../../Assets/Images/Notification.png"),
-  gcheck: require("../../Assets/Images/gcheck.png"),
-  check: require("../../Assets/Images/check.png"),
-
-  
+type RootStackParamList = {
+  DealsCaseDetails: {
+    id: string;
+    clientName: string;
+    caseNumber: string;
+    amount: string;
+    status: string;
+    tags: string[];
+    dateOfLoss: string;
+    dateReceived: string;
+    stageTime: string;
+  };
 };
+
+
+
+const FILTER_OPTIONS: string[] = ["All Deals", "Processing", "UnderWriting"];
+
 
 
 const overviewStats: OverviewStat[] = [
@@ -102,6 +110,7 @@ const getStatusColor = (status: string) => {
 };
 
 
+
 const Header = () => (
   <View className="flex-row items-center justify-between bg-white px-4 py-3 border-b border-[#E0E0E0]">
     <Image source={images.logo} style={{ height: 36, width: 140 }} resizeMode="contain" />
@@ -122,11 +131,11 @@ const OverviewCard = ({ item }: { item: OverviewStat }) => (
     style={{ elevation: 2, shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 4 }}>
     <View className="flex-row items-center gap-x-1.5 mb-2.5">
       {item.label === "Ready To Funds" ? (
-        <Image source = {images.gcheck} style={{ width: 20, height: 20 }} resizeMode="contain" />
+        <Image source={images.Gcheck} style={{ width: 20, height: 20 }} resizeMode="contain" />
       ) : (
-        <Image source = {images.check} style={{ width: 20, height: 20 }} resizeMode="contain" />
+        <Image source={images.check} style={{ width: 20, height: 20 }} resizeMode="contain" />
       )}
-      <Text className="text-xs font-semibold text-[#b73030] flex-shrink">{item.label}</Text>
+      <Text className="text-xs font-semibold text-[#212121] flex-shrink">{item.label}</Text>
     </View>
     <View className="flex-row justify-between mb-1">
       <Text className="text-xs text-[#757575]">Count:</Text>
@@ -139,72 +148,88 @@ const OverviewCard = ({ item }: { item: OverviewStat }) => (
   </View>
 );
 
-const CaseCard = ({ item }: { item: CaseItem }) => (
-  <View
-    className="bg-white rounded-2xl p-4 mb-3.5"
-    style={{ elevation: 2, shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.07, shadowRadius: 5 }}>
+const CaseCard = ({ item }: { item: CaseItem }) => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  
-    <View className="flex-row justify-between items-start mb-2.5">
-      <View>
-        <Text className="text-base font-bold text-[#212121]">{item.clientName}</Text>
-        <Text className="text-xs text-[#757575] mt-0.5">{item.caseNumber}</Text>
-      </View>
-      <Text className="text-lg font-bold text-[#2E7D32]">{item.amount}</Text>
-    </View>
+  return (
+    <View
+      className="bg-white rounded-2xl p-4 mb-3.5"
+      style={{ elevation: 2, shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.07, shadowRadius: 5 }}>
 
-
-    <View className="flex-row flex-wrap gap-1.5 mb-2.5">
-      {item.tags.map((tag) => (
-        <View key={tag} className="border border-[#E0E0E0] rounded-full px-2.5 py-0.5">
-          <Text className="text-xs text-[#757575] font-medium">{tag}</Text>
+      {/* Client + Amount */}
+      <View className="flex-row justify-between items-start mb-2.5">
+        <View>
+          <Text className="text-base font-bold text-[#212121]">{item.clientName}</Text>
+          <Text className="text-xs text-[#757575] mt-0.5">{item.caseNumber}</Text>
         </View>
-      ))}
-    </View>
-
-   
-    <View className="flex-row items-center gap-x-2 mb-3">
-      <Text className="text-sm text-[#757575]">Status:</Text>
-      <View style={{ backgroundColor: getStatusColor(item.status) }} className="rounded-full px-3 py-1">
-        <Text className="text-xs font-semibold text-white">{item.status}</Text>
+        <Text className="text-lg font-bold text-[#2E7D32]">{item.amount}</Text>
       </View>
+
+      {/* Tags */}
+      <View className="flex-row flex-wrap gap-1.5 mb-2.5">
+        {item.tags.map((tag) => (
+          <View key={tag} className="border border-[#E0E0E0] rounded-full px-2.5 py-0.5">
+            <Text className="text-xs text-[#757575] font-medium">{tag}</Text>
+          </View>
+        ))}
+      </View>
+
+      {/* Status */}
+      <View className="flex-row items-center gap-x-2 mb-3">
+        <Text className="text-sm text-[#757575]">Status:</Text>
+        <View style={{ backgroundColor: getStatusColor(item.status) }} className="rounded-full px-3 py-1">
+          <Text className="text-xs font-semibold text-white">{item.status}</Text>
+        </View>
+      </View>
+
+      {/* Divider */}
+      <View className="h-px bg-[#E0E0E0] mb-3" />
+
+      {/* Dates */}
+      <View className="flex-row justify-between mb-1.5">
+        <Text className="text-sm text-[#757575]">Date of Loss</Text>
+        <Text className="text-sm font-medium text-[#212121]">{item.dateOfLoss}</Text>
+      </View>
+      <View className="flex-row justify-between mb-1.5">
+        <Text className="text-sm text-[#757575]">Date Received</Text>
+        <Text className="text-sm font-medium text-[#212121]">{item.dateReceived}</Text>
+      </View>
+      <View className="flex-row justify-between mb-1.5">
+        <Text className="text-sm text-[#757575]">Stage Time</Text>
+        <Text className="text-sm font-medium text-[#212121]">{item.stageTime}</Text>
+      </View>
+
+      {/* View Case Button */}
+      <TouchableOpacity
+        className="mt-3.5 border-2 border-[#2E7D32] rounded-xl py-3 flex-row items-center justify-center gap-x-2"
+        activeOpacity={0.75}
+        onPress={() => navigation.navigate("DealsCaseDetails", {
+          id: item.id,
+          clientName: item.clientName,
+          caseNumber: item.caseNumber,
+          amount: item.amount,
+          status: item.status,
+          tags: item.tags,
+          dateOfLoss: item.dateOfLoss,
+          dateReceived: item.dateReceived,
+          stageTime: item.stageTime,
+        })}>
+        <Text className="text-sm font-semibold text-[#2E7D32]">View Case</Text>
+        <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+          <Line x1={5} y1={12} x2={19} y2={12} stroke="#2E7D32" strokeWidth={2} strokeLinecap="round" />
+          <Polyline points="12 5 19 12 12 19" stroke="#2E7D32" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+        </Svg>
+      </TouchableOpacity>
+
     </View>
-
-    
-    <View className="h-px bg-[#E0E0E0] mb-3" />
-
-   
-    <View className="flex-row justify-between mb-1.5">
-      <Text className="text-sm text-[#757575]">Date of Loss</Text>
-      <Text className="text-sm font-medium text-[#212121]">{item.dateOfLoss}</Text>
-    </View>
-    <View className="flex-row justify-between mb-1.5">
-      <Text className="text-sm text-[#757575]">Date Received</Text>
-      <Text className="text-sm font-medium text-[#212121]">{item.dateReceived}</Text>
-    </View>
-    <View className="flex-row justify-between mb-1.5">
-      <Text className="text-sm text-[#757575]">Stage Time</Text>
-      <Text className="text-sm font-medium text-[#212121]">{item.stageTime}</Text>
-    </View>
-
-  
-    <TouchableOpacity
-      className="mt-3.5 border-2 border-[#2E7D32] rounded-xl py-3 flex-row items-center justify-center gap-x-2"
-      activeOpacity={0.75}>
-      <Text className="text-sm font-semibold text-[#2E7D32]">View Case</Text>
-      <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
-        <Line x1={5} y1={12} x2={19} y2={12} stroke="#2E7D32" strokeWidth={2} strokeLinecap="round" />
-        <Polyline points="12 5 19 12 12 19" stroke="#2E7D32" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-      </Svg>
-    </TouchableOpacity>
-
-  </View>
-);
-
+  );
+};
 
 
 export default function Deals() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery]       = useState("");
+  const [showDropdown, setShowDropdown]     = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState("All Deals");
 
   const filteredCases = recentCases.filter(
     (c) =>
@@ -222,13 +247,44 @@ export default function Deals() {
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 100 }}
         keyboardShouldPersistTaps="handled">
 
-        {/* Page Title */}
-        <TouchableOpacity className="flex-row items-center gap-x-1 mt-5 mb-3" activeOpacity={0.7}>
-          <Text className="text-2xl font-bold text-[#212121]">All Deals</Text>
-          <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-            <Path d="M6 9l6 6 6-6" stroke="#212121" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-          </Svg>
-        </TouchableOpacity>
+        {/* Page Title + Dropdown */}
+        <View className="mt-5 mb-3">
+
+          {/* Trigger button */}
+          <TouchableOpacity
+            className="flex-row items-center gap-x-1"
+            activeOpacity={0.7}
+            onPress={() => setShowDropdown(!showDropdown)}>
+            <Text className="text-xl font-bold text-[#212121]">{selectedFilter}</Text>
+            <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+              <Path
+                d={showDropdown ? "M18 15l-6-6-6 6" : "M6 9l6 6 6-6"}
+                stroke="#212121" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+            </Svg>
+          </TouchableOpacity>
+
+          {/* Dropdown menu */}
+          {showDropdown && (
+            <View
+              className="absolute top-10 left-0 bg-white rounded-xl z-10 w-44"
+              style={{ elevation: 8, shadowColor: "#000", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 8 }}>
+              {FILTER_OPTIONS.map((option, index) => (
+                <TouchableOpacity
+                  key={option}
+                  className={`px-4 py-3 ${index !== FILTER_OPTIONS.length - 1 ? "border-b border-[#F0F0F0]" : ""}`}
+                  onPress={() => {
+                    setSelectedFilter(option);
+                    setShowDropdown(false);
+                  }}>
+                  <Text className={`text-sm ${selectedFilter === option ? "font-bold text-[#2E7D32]" : "font-medium text-[#212121]"}`}>
+                    {option}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+
+        </View>
 
         {/* Search Bar */}
         <View className="flex-row items-center bg-white rounded-xl border border-[#E0E0E0] px-3.5 mb-5 h-12">
@@ -265,6 +321,16 @@ export default function Deals() {
         )}
 
       </ScrollView>
+
+      {/* Close dropdown when tapping outside */}
+      {showDropdown && (
+        <TouchableOpacity
+          className="absolute inset-0"
+          activeOpacity={1}
+          onPress={() => setShowDropdown(false)}
+        />
+      )}
+
     </SafeAreaView>
   );
 }
