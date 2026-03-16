@@ -181,7 +181,7 @@ const handleAddNote = () => {
 
       <ScrollView ref={scrollRef} stickyHeaderIndices={[1]}
         showsVerticalScrollIndicator={false} onScroll={handleScroll}
-        contentContainerStyle={{paddingBottom: 60 }}>
+        contentContainerStyle={{paddingBottom: 150 }}>
         <View className="px-[24px]">
             <View
             className="rounded-[16px] border-[#F4F4F4] px-[20px] py-[16px] bg-[#FFFFFF] mb-5 "

@@ -9,6 +9,7 @@ type RootStackParamList = {
   Home: undefined;
   Users: undefined;
   Company: undefined;
+  Contacts: undefined;
 };
 
 export default function More() {
@@ -52,7 +53,9 @@ export default function More() {
             </View>
           </Pressable>
 
-          <Pressable className="flex-1">
+          <Pressable 
+          onPress={() => navigation.navigate("Contacts")}
+           className="flex-1">
             <View
               className="py-[24px] items-center border border-[#F4F4F4] bg-white rounded-[8px]"
               style={{ shadowColor: "#888", shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.05, elevation: 4, }} >

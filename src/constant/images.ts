@@ -13,6 +13,7 @@ const images = {
   company: require("../Assets/Images/company.png"),
   personIcon: require("../Assets/Images/personIcon.png"),
   calendarIcon: require("../Assets/Images/calendarIcon.png"),
+  calendar2Icon: require("../Assets/Images/calendar2Icon.png"),
   locationIcon: require("../Assets/Images/locationIcon.png"),
   phoneIcon: require("../Assets/Images/phoneIcon.png"),
   gearPersonIcon: require("../Assets/Images/gearPersonIcon.png"),
@@ -21,6 +22,9 @@ const images = {
   Notif: require("../Assets/Images/Notification.png"),
   Gcheck: require("../Assets/Images/gcheck.png"),
   check: require("../Assets/Images/check.png"),
+  arrowButton: require("../Assets/Images/arrowButton.png"),
+  phone2Icon: require("../Assets/Images/phone2Icon.png"),
+  atIcon: require("../Assets/Images/atIcon.png")
 };
 
 export default images;  

@@ -12,11 +12,12 @@ import { Animated } from "react-native";
 
 
 type RootStackParamList = {
-  CaseDetails: {
+  ContactsDetails: {
     name: string;
     phone: string;
     address: string;
     type: string;
+    personName: string
   };
 };
 const calendarTheme = {
@@ -24,17 +25,19 @@ const calendarTheme = {
     primary: "#8BC240",        
     onPrimary: "#ffffff",
     background: "#ffffff",
-    surface: "#ffffff",
+    surface: "#ffffff",  
     text: "#1f2937",
     placeholder: "#9CA3AF",
   },
 };
 
 
-export default function Company() {
+export default function Contacts() {
 
   const [showFilter, setShowFilter] = useState(false);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc" | null>(null);
+  const [contactSort, setContactSort] = useState<"asc" | "desc" | null>(null);
+  const [accountSort, setAccountSort] = useState<"asc" | "desc" | null>(null);
+  const [phoneSort, setPhoneSort] = useState<"asc" | "desc" | null>(null);
   const [companyType, setCompanyType] = useState<string | null>(null);
   const [searchText, setSearchText] = useState("");
   const [showBanner, setShowBanner] = useState(false);
@@ -44,7 +47,6 @@ export default function Company() {
   const navigation = useNavigation<NavigationProp>();
 
   const resetFilter = () => {
-  setSortOrder(null);
   setCompanyType(null);
   };
 
@@ -125,40 +127,43 @@ export default function Company() {
     startDate: undefined,
     endDate: undefined,
   });
-  const formatDate = (date: Date) => {
-  return date.toLocaleDateString("en-US");
+    const formatDate = (date: Date) => {
+    return date.toLocaleDateString("en-US");
   };
 
     const companyTypes = [
-    { label: "Law Firm", value: "Law Firm" },
-    { label: "Imaging", value: "Imaging" },
-    { label: "Neurology", value: "Neurology" },
-    { label: "DME", value: "DME" },
-    { label: "Lien Company", value: "Lien Company" },
-    { label: "Funding Company", value: "Funding Company" },
-    { label: "Med Records", value: "Med Records" },
-    { label: "Accupuncture", value: "Accupuncture" },
+    { label: "Attorney", value: "Attorney" },
+    { label: "Injured Party", value: "Injured Party" },
+    { label: "Reductions", value: "Reductions" },
+    { label: "Insurances Co", value: "Insurances Co" },
+    { label: "Marketer", value: "Marketer" },
+    { label: "Paralegal", value: "Paralegal" },
+    { label: "Judge", value: "Judge" },
+    { label: "Negotiator", value: "Negotiator" },
   ];
 
   const companies = [
     {
       id: 1,
+      personName: "Choi, Kenneth",
       name: "ABCDE Company",
-      type: "Law Firm",
+      type: "Injured Party",
       phone: "61239001123",
       address: "3578 Hiney Road, Nevada, Las Vegas",
       date: "December 20, 2025. 03:31:11 PM",
     },
     {
       id: 2,
+      personName: "Raymond",
       name: "Global Tech Ltd.",
-      type: "Imaging",
+      type: "Injured Party",
       phone: "98765432100",
       address: "245 Sunset Blvd, California, Los Angeles",
       date: "January 12, 2026. 10:20:45 AM",
     },
     {
       id: 3,
+      personName: "Javier",
       name: "Prime Holdings",
       type: "Neurology",
       phone: "44556677889",
@@ -167,14 +172,16 @@ export default function Company() {
     },
     {
       id: 4,
+      personName: "Agapay",
       name: "Funding Experts",
-      type: "Funding Company",
+      type: "Injured Party",
       phone: "33445566778",
       address: "55 Wall Street, New York, Manhattan",
       date: "March 01, 2026. 09:45:00 AM",
     },
     {
       id: 5,
+      personName: "Israel",
       name: "ABCD Company",
       type: "Law Firm",
       phone: "33445566778",
@@ -196,7 +203,8 @@ export default function Company() {
     });
 
     const filtered = sorted.filter((company) =>
-      company.name.toLowerCase().includes(searchText.toLowerCase())
+     company.name.toLowerCase().includes(searchText.toLowerCase()) ||
+     company.personName.toLowerCase().includes(searchText.toLowerCase())
     );
 
         setFilteredCompanies(filtered);
@@ -206,7 +214,8 @@ export default function Company() {
       setSearchText(text);
 
       const searched = companies.filter((company) =>
-        company.name.toLowerCase().includes(text.toLowerCase())
+        company.name.toLowerCase().includes(text.toLowerCase()) ||
+        company.personName.toLowerCase().includes(text.toLowerCase())
       );
 
       if (companyType) {
@@ -221,29 +230,40 @@ export default function Company() {
     };
       
     const applySortAndFilter = () => {
-      let updated = [...companies];
+
+    let updated = [...companies];
+
+      if (contactSort === "asc") {
+      updated.sort((a,b)=>a.personName.localeCompare(b.personName));
+      }
+
+      if (contactSort === "desc") {
+      updated.sort((a,b)=>b.personName.localeCompare(a.personName));
+      }
+
+      if (accountSort === "asc") {
+      updated.sort((a,b)=>a.name.localeCompare(b.name));
+      }
+
+      if (accountSort === "desc") {
+      updated.sort((a,b)=>b.name.localeCompare(a.name));
+      }
+
+      if (phoneSort === "asc") {
+      updated.sort((a,b)=>a.phone.localeCompare(b.phone));
+      }
+
+      if (phoneSort === "desc") {
+      updated.sort((a,b)=>b.phone.localeCompare(a.phone));
+      }
 
       if (companyType) {
-        updated = updated.sort((a, b) => {
-          if (a.type === companyType && b.type !== companyType) return -1;
-          if (a.type !== companyType && b.type === companyType) return 1;
-          return 0;
-        });
+      updated = updated.filter(
+      (c)=>c.type === companyType
+      );
       }
 
-      if (searchText) {
-        updated = updated.filter((company) =>
-          company.name.toLowerCase().includes(searchText.toLowerCase())
-        );
-      }
-
-      if (sortOrder === "asc") {
-        updated.sort((a, b) => a.name.localeCompare(b.name));
-      } else if (sortOrder === "desc") {
-        updated.sort((a, b) => b.name.localeCompare(a.name));
-      }
-
-      setFilteredCompanies(updated);
+    setFilteredCompanies(updated);
     };
 
   return (
@@ -263,7 +283,7 @@ export default function Company() {
 
           <View className="flex-1 items-center">
             <Text className="text-[16px] font-jakarta-bold">
-              Company
+              Contacts
             </Text>
           </View>
 
@@ -305,25 +325,28 @@ export default function Company() {
                 style={{ shadowColor: "#888",shadowOffset: { width: 0, height: 10 },shadowOpacity: 0.05,
                   shadowRadius: 10, elevation: 4, }} >
 
-                <View className="flex-row justify-between items-center">
-                  <Text className="font-jakarta-medium text-[14px]">
+                <Text className="font-jakarta-bold text-[14px]">{company.personName}</Text>
+
+                <View className="flex-row justify-between items-center">   
+                  <Text className="font-jakarta-medium text-[12px]">
                     {company.name}
                   </Text>
 
                   <View className="flex-row items-center gap-2 rounded-[12px] bg-[#8BC2401A] p-[8px]">
                     <Image
                       className="w-[10px] h-[10px]"
-                      source={images.company} />
+                      source={images.gearPersonIcon} />
                     <Text className="font-jakarta-medium text-[10px]">
                       {company.type}
                     </Text>
                   </View>
-                </View>
+                </View> 
 
                 <View className="flex-row items-center gap-3 mt-3">
                   <Image
                     className="w-[12px] h-[12px]"
-                    source={images.phoneIcon} />
+                    source={images.phoneIcon} 
+                    resizeMode="contain"/>
                   <Text className="font-jakarta-medium text-[12px]">
                     {company.phone}
                   </Text>
@@ -331,17 +354,9 @@ export default function Company() {
 
                 <View className="flex-row items-center gap-3 mt-3">
                   <Image
-                    className="w-[12px] h-[12px]"
-                    source={images.locationIcon} />
-                  <Text className="font-jakarta-medium text-[12px]">
-                    {company.address}
-                  </Text>
-                </View>
-
-                <View className="flex-row items-center gap-3 mt-3">
-                  <Image
-                    className="w-[12px] h-[12px]"
-                    source={images.calendarIcon} />
+                    className="w-[12px] h-[13px]"
+                    source={images.calendarIcon} 
+                    resizeMode="contain"/>
                   <Text className="font-jakarta-medium text-[12px]">
                     {company.date}
                   </Text>
@@ -349,11 +364,12 @@ export default function Company() {
 
                 <Pressable
                   onPress={() =>
-                    navigation.navigate("CaseDetails", {
+                    navigation.navigate("ContactsDetails", {
                       name: company.name,
                       phone: company.phone,
                       address: company.address,
-                      type: company.type
+                      type: company.type,
+                      personName: company.personName
                     })
                   }
                   className="rounded-[16px] bg-[#FFFFFF] border border-[#8BC240] px-[20px] py-[16px] items-center mt-6">
@@ -371,7 +387,7 @@ export default function Company() {
                 </Pressable>
 
               </View>
-            )))}
+            )))}      
         </ScrollView>
       </View>
 
@@ -380,149 +396,139 @@ export default function Company() {
 
           <View className="bg-white rounded-t-[30px] p-6">
 
-            <View className="items-center mb-4">
-              <View className="w-[40px] h-[5px] bg-gray-300 rounded-full"/>
-            </View>
+          <View className="items-center mb-4">
+          <View className="w-[40px] h-[5px] bg-gray-300 rounded-full"/>
+          </View>
 
-            <View className="flex-row justify-between items-center">
-              <Text className="text-[18px] font-jakarta-bold">
-                Sort & Filter
-              </Text>
+          <View className="flex-row justify-between items-center">
+          <Text className="text-[20px] font-jakarta-bold">Sort & Filter</Text>
 
-              <Pressable onPress={() => setShowFilter(false)}>
-                <Text className="text-[#8BC240]">
-                  Reset Filter
-                </Text>
-              </Pressable>
-            </View>
+          <Pressable onPress={resetFilter}>
+          <Text className="text-[#8BC240]">Reset Filter</Text>
+          </Pressable>
+          </View>
 
-            <Text className="mt-4 font-jakarta-medium">
-              Sort
-            </Text>
+          <Text className="font-jakarta-medium mt-2 text-[15px]">Sort</Text>
 
-            <Text className="mt-2 text-gray-500">
-              Company Name
-            </Text>
+          <Text className="font-jakarta-medium mt-4 text-[14px]">Contact Name</Text>
 
-          <View className="flex-row gap-3 mt-3">
+          <View className="flex-row gap-3 mt-2">
 
-            <Pressable
-              onPress={() => setSortOrder("asc")}
-              className={`flex-1 rounded-[12px] py-3 items-center ${
-                sortOrder === "asc" ? "bg-[#8BC240]" : "bg-[#eeeeee]"}`}>
-              <Text
-                className={`${
-                  sortOrder === "asc" ? "text-white" : "text-gray-500"
-                } font-jakarta-medium`}>
+            <Pressable onPress={() => setContactSort("asc")}
+              className={`font-jakarta-medium flex-1 py-3 rounded-[12px] items-center ${
+                contactSort === "asc" ? "bg-[#8BC240]" : "bg-[#eeeeee]" }`}>
+
+              <Text className= {contactSort === "asc" ? "text-white" : "text-gray-500"}>
                 Ascending
               </Text>
             </Pressable>
 
-            <Pressable
-              onPress={() => setSortOrder("desc")}
-              className={`flex-1 rounded-[12px] py-3 items-center ${
-                sortOrder === "desc" ? "bg-[#8BC240]" : "bg-[#eeeeee]"}`}>
+            <Pressable onPress={() => setContactSort("desc")}
+              className={`font-jakarta-medium flex-1 py-3 rounded-[12px] items-center ${
+                contactSort === "desc" ? "bg-[#8BC240]" : "bg-[#eeeeee]"}`}>
 
-              <Text
-                className={`${
-                  sortOrder === "desc" ? "text-white" : "text-gray-500"
-                } font-jakarta-medium`}>
+              <Text className={contactSort === "desc" ? "text-white" : "text-gray-500"}>
                 Descending
               </Text>
             </Pressable>
 
           </View>
 
-            <Text className="mt-5 font-jakarta-medium">
-              Filter
-            </Text>
+          <Text className="font-jakarta-medium mt-4 text-[14px]">Account Name</Text>
 
-            <Text className="mt-3 text-gray-500">
-              Company Type
-            </Text>
+          <View className="flex-row gap-3 mt-2">
 
-            <Dropdown
-              style={{ height: 50, borderColor: "#8BC240", borderWidth: 1, borderRadius: 12, paddingHorizontal: 12,
-                marginTop: 8,  backgroundColor: "#eeeeee", }}
+            <Pressable onPress={() => setAccountSort("asc")}
+              className={`font-jakarta-medium flex-1 py-3 rounded-[12px] items-center ${
+                accountSort === "asc" ? "bg-[#8BC240]" : "bg-[#eeeeee]"}`}>
 
-              placeholderStyle={{ color: "#9CA3AF" }} selectedTextStyle={{ color: "#000" }} data={companyTypes} labelField="label"
-              valueField="value" placeholder="Company Type" value={companyType}
-              onChange={(item) => { setCompanyType(item.value); }} />
+              <Text className={accountSort === "asc" ? "text-white" : "text-gray-500"}>
+                Ascending
+              </Text>
+            </Pressable>
 
-            {sortOrder ? (<>
+            <Pressable onPress={() => setAccountSort("desc")}
+                className={`font-jakarta-medium flex-1 py-3 rounded-[12px] items-center ${
+                  accountSort === "desc" ? "bg-[#8BC240]" : "bg-[#eeeeee]" }`}>
 
-            <Text className="mt-4 text-gray-500">
+              <Text className={accountSort === "desc" ? "text-white" : "text-gray-500"}>
+                Descending
+              </Text>
+            </Pressable>               
+          </View>
+
+          <Text className="font-jakarta-medium mt-4 text-[14px]">Phone</Text>
+
+          <View className="flex-row gap-3 mt-2">
+
+            <Pressable onPress={() => setPhoneSort("asc")}
+              className={`font-jakarta-medium flex-1 py-3 rounded-[12px] items-center ${
+                phoneSort === "asc" ? "bg-[#8BC240]" : "bg-[#eeeeee]"}`}>
+
+              <Text className={phoneSort === "asc" ? "text-white" : "text-gray-500"}>
+                Ascending
+              </Text>
+            </Pressable>
+
+            <Pressable onPress={() => setPhoneSort("desc")}
+              className={`font-jakarta-medium flex-1 py-3 rounded-[12px] items-center ${
+                phoneSort === "desc" ? "bg-[#8BC240]" : "bg-[#eeeeee]"}`}>
+              <Text className={phoneSort === "desc" ? "text-white" : "text-gray-500"}>
+                Descending
+              </Text>
+            </Pressable>
+
+          </View>
+
+          <Text className="mt-6 text-[16px] font-jakarta-semibold">Filter</Text>
+
+          <Text className="mt-3 font-jakarta-medium text-[14px]">Role</Text>
+
+          <Dropdown style={{ height:50, borderRadius:12,paddingHorizontal:12, marginTop:8, backgroundColor:"#eeeeee" }}
+            data={companyTypes}
+            labelField="label"
+            valueField="value"
+            placeholder="Company Type"
+            value={companyType}
+            onChange={(item)=>setCompanyType(item.value)}/>
+
+            <Text className="mt-4 font-jakarta-medium text-[14px]">
               Modified Time
             </Text>
 
-          <Pressable
-            onPress={() => setOpenCalendar(true)}
-            className="flex-row items-center justify-between bg-[#eeeeee] rounded-[12px] py-3 px-4 mt-2">
+            <Pressable
+              onPress={() => setOpenCalendar(true)}
+              className="flex-row items-center justify-between bg-[#eeeeee] rounded-[12px] py-3 px-4 mt-2">
 
-            <Text className="text-gray-400">
-              {range.startDate && range.endDate
-                ? `${formatDate(range.startDate)} - ${formatDate(range.endDate)}`
-                : "DD/MM/YYYY - DD/MM/YYYY"}
-            </Text>
+              <Text className="text-gray-400">
+                {range.startDate && range.endDate
+                  ? `${formatDate(range.startDate)} - ${formatDate(range.endDate)}`
+                  : "DD/MM/YYYY - DD/MM/YYYY"}
+              </Text>
 
-            <Image
-              source={images.calendar2Icon}
-              resizeMode="contain"
-              className="w-[18px] h-[18px]" />
+              <Image
+                source={images.calendar2Icon}
+                resizeMode="contain"
+                className="w-[18px] h-[18px]"/>
 
+            </Pressable>   
+
+
+          <Pressable onPress={()=>{
+            applySortAndFilter()
+            setShowFilter(false)
+            showFilterBanner()
+          }}
+          className="bg-[#8BC240] py-4 rounded-[16px] items-center mt-6">
+
+          <Text className="text-white font-jakarta-medium">Save</Text>
           </Pressable>
 
-              </>) : (<>
-            <Text className="mt-4 text-gray-500">
-              Date of Loss
-            </Text>
+          <Pressable onPress={()=>setShowFilter(false)}
+          className="bg-gray-400 py-4 rounded-[16px] items-center mt-3">
 
-          <View className="flex-row gap-3 mt-2">
-            <View className="flex-1 bg-[#eeeeee] rounded-[12px] py-3 px-4">
-              <Text className="text-gray-400">MM/DD/YYYY</Text>
-            </View>
-
-            <View className="flex-1 bg-[#eeeeee] rounded-[12px] py-3 px-4">
-              <Text className="text-gray-400">MM/DD/YYYY</Text>
-            </View>
-          </View>
-
-          <Text className="mt-4 text-gray-500">
-            Date of Received
-          </Text>
-
-          <View className="flex-row gap-3 mt-2">
-            <View className="flex-1 bg-[#eeeeee] rounded-[12px] py-3 px-4">
-              <Text className="text-gray-400">MM/DD/YYYY</Text>
-            </View>
-
-            <View className="flex-1 bg-[#eeeeee] rounded-[12px] py-3 px-4">
-              <Text className="text-gray-400">MM/DD/YYYY</Text>
-            </View>
-          </View>
-           
-           </>)}
-
-            <Pressable 
-              onPress={() => {
-                applyFilter();
-                applySortAndFilter();
-                setShowFilter(false);
-                showFilterBanner();
-              }}
-              className="bg-[#8BC240] py-4 rounded-[16px] items-center mt-6">
-              <Text className="text-white font-jakarta-medium">
-                Save
-              </Text>
-            </Pressable>
-
-            <Pressable
-              onPress={() => {resetFilter(); setShowFilter(false);}}
-              className="bg-gray-400 py-4 rounded-[16px] items-center mt-3">
-              <Text className="text-white font-jakarta-medium">
-                Cancel
-              </Text>
-            </Pressable>
+          <Text className="text-white font-jakarta-medium">Cancel</Text>
+          </Pressable>
 
           </View>
 
@@ -562,16 +568,12 @@ export default function Company() {
 
                 markedDates={getMarkedDates()}
 
-                theme={{
-                  todayTextColor: "#8BC240",
-                  arrowColor: "#8BC240",
-                }}
+                theme={{ todayTextColor: "#8BC240", arrowColor: "#8BC240", }}
 
                 renderArrow={(direction) => (
                   <Text style={{ fontSize: 18, color: "#8BC240" }}>
                     {direction === "left" ? "‹" : "›"}
-                  </Text>
-                )}
+                  </Text>)}
 
                 enableSwipeMonths={true}/>
 
@@ -587,7 +589,7 @@ export default function Company() {
                   className="flex-1 bg-[#8BC240] py-3 rounded-[12px] items-center ml-2">
 
                   <Text className="text-white">Done</Text>
-                </Pressable>
+                </Pressable> 
 
               </View>
 
@@ -596,30 +598,19 @@ export default function Company() {
         </Modal>
 
         <Animated.View
-          style={{ position: "absolute", top: 30, left: 20, right: 20,
-            transform: [{ translateY: slideAnim }],
-            backgroundColor: "#6AA56A",
-            paddingVertical: 20,
-            paddingHorizontal: 20,
-            borderRadius: 16,
-            zIndex: 999,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}>
+            style={{ position: "absolute", top: 30, left: 20, right: 20, transform: [{ translateY: slideAnim }],
+            backgroundColor: "#6AA56A", paddingVertical: 20, paddingHorizontal: 20, borderRadius: 16,
+            zIndex: 999, flexDirection: "row", justifyContent: "space-between", alignItems: "center",}}>
 
           <Text style={{ color: "white", fontWeight: "600" }}>
             Filters applied
           </Text>
 
           <Pressable
-            onPress={() =>
-              Animated.timing(slideAnim, {
-                toValue: -100,
-                duration: 300,
-                useNativeDriver: true,
-              }).start()
-            }>
+            onPress={() => Animated.timing(slideAnim, {
+                toValue: -100, duration: 300, useNativeDriver: true,
+              }).start()}>
+
             <Text style={{ color: "white", fontSize: 18 }}>✕</Text>
           </Pressable>
 
