@@ -155,8 +155,8 @@ export default function Login({ navigation }: { navigation: any }) {
               <Pressable
                 className="w-full h-[52px] bg-[#8BC240] rounded-2xl justify-center items-center"
                 onPress={handleLogin}
-                disabled={isLoading}
-              >
+                disabled={isLoading}>
+                  
                 {isLoading ? (
                   <ActivityIndicator color="white" size="small" />
                 ) : (

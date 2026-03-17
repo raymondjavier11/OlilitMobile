@@ -5,6 +5,7 @@ import images from "../../constant/images";
 import { NativeSyntheticEvent, NativeScrollEvent } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { RouteProp } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type RootStackParamList = {
   CaseDetails: {
@@ -160,10 +161,10 @@ const handleAddNote = () => {
 
   return (
 
-    
+  <SafeAreaView className="flex-1 bg-white">
     <View className="flex-1 bg-white ">
 
-      <View className="flex-row items-center mt-12 mb-[20px] px-[24px]">
+      <View className="flex-row items-center mt-3 mb-[20px] px-[24px]">
         <Pressable
           onPress={() => navigation.goBack()}
           className="w-[44px] h-[44px] rounded-full bg-[#f3f2f2] justify-center items-center">
@@ -594,5 +595,6 @@ const handleAddNote = () => {
 
       </ScrollView>
     </View>
+  </SafeAreaView>
   );
 }

@@ -20,8 +20,9 @@ import Deals from '../screens/Deals/Deals';
 import DealsCaseDetails from '../screens/Deals/CaseDetails';
 import Contacts from '../screens/more/Contacts';
 import ContactsDetails from '../screens/more/ContactsDetails';
-
-
+import Settings from '../screens/settings/Settings';
+import ChangePassword  from '../screens/settings/ChangePassword';
+import ApplyNewPassword from '../screens/settings/ApplyNewPassword';
 
 
 import BottomNavBar from '../components/BottomNavBar';
@@ -45,7 +46,6 @@ const MainTabNavigator = () => (
 const AppNavigator = () => (
   <NavigationContainer>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-   
       <Stack.Screen name="Splash" component={SplashScreen} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Main" component={MainTabNavigator} />
@@ -61,7 +61,9 @@ const AppNavigator = () => (
       <Stack.Screen name="Contacts" component={Contacts} /> 
       <Stack.Screen name="ContactsDetails" component={ContactsDetails} />
       <Stack.Screen name="CaseDetails" component={CaseDetails} />
-      
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
+      <Stack.Screen name="ApplyNewPassword" component={ApplyNewPassword} />
+      <Stack.Screen name="Settings" component={Settings} />
     </Stack.Navigator>
   </NavigationContainer>
 );

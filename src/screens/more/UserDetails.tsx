@@ -4,6 +4,7 @@ import images from "../../constant/images";
 import { useRoute } from "@react-navigation/native";
 import { RouteProp } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type RootStackParamList = {
   UserDetails: { name: string };
@@ -31,7 +32,7 @@ export default function UserDetails() {
   const navigation = useNavigation();
 
 return (
-
+  <SafeAreaView className="flex-1 bg-white">
     <View className="px-[24px] ">
 
     {showToast && (
@@ -47,7 +48,7 @@ return (
     </View>
     )}
 
-    <View className="flex-row items-center mt-12 mb-[20px]">
+    <View className="flex-row items-center mt-3 mb-[20px]">
 
         <Pressable onPress={() => navigation.goBack()}
             className="w-[44px] h-[44px] rounded-full bg-[#f3f2f2] justify-center items-center">
@@ -147,5 +148,6 @@ return (
         </View>
       </View>
     </View>
+  </SafeAreaView>
   );
 }

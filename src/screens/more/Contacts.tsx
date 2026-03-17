@@ -47,7 +47,20 @@ export default function Contacts() {
   const navigation = useNavigation<NavigationProp>();
 
   const resetFilter = () => {
-  setCompanyType(null);
+  
+    setCompanyType(null);
+    setContactSort(null);
+    setAccountSort(null);
+    setPhoneSort(null);
+
+    setSearchText("");
+
+    setRange({
+      startDate: undefined,
+      endDate: undefined,
+    });
+
+    setFilteredCompanies(companies);
   };
 
   const showFilterBanner = () => {
@@ -271,7 +284,7 @@ export default function Contacts() {
     <SafeAreaView className="flex-1 bg-white">
       <View className="flex-1 px-[24px]">
 
-        <View className="flex-row items-center mt-12 mb-[20px]">
+        <View className="flex-row items-center mt-3 mb-[20px]">
 
           <Pressable
             onPress={() => navigation.goBack()}
@@ -404,7 +417,7 @@ export default function Contacts() {
           <Text className="text-[20px] font-jakarta-bold">Sort & Filter</Text>
 
           <Pressable onPress={resetFilter}>
-          <Text className="text-[#8BC240]">Reset Filter</Text>
+          <Text className="text-[#8BC240] underline">Reset Filter</Text>
           </Pressable>
           </View>
 
