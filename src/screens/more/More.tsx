@@ -10,6 +10,7 @@ type RootStackParamList = {
   Users: undefined;
   Company: undefined;
   Contacts: undefined;
+  Settings: undefined;
 };
 
 export default function More() {
@@ -20,7 +21,15 @@ export default function More() {
     <SafeAreaView className="flex-1 bg-white">
      <View className="px-[24px] mt-5">
 
-      <Text className="font-jakarta-bold text-[20px]">More</Text>
+      <View className="flex-row items-center justify-between">
+          <Text className="font-jakarta-bold text-[20px]">More</Text>
+        <Pressable onPress={() => navigation.navigate("Settings")}>
+          <Image source={images.settingsIcon}
+                className="w-[30px] h-[25px]"
+                resizeMode="contain"/>
+        </Pressable>
+          
+      </View>
 
       <View className="mt-[30px]">
         <Text className="font-jakarta-medium text-[16px]">Action</Text>
