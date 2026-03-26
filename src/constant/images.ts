@@ -24,7 +24,8 @@ const images = {
   check: require("../Assets/Images/check.png"),
   arrowButton: require("../Assets/Images/arrowButton.png"),
   phone2Icon: require("../Assets/Images/phone2Icon.png"),
-  atIcon: require("../Assets/Images/atIcon.png")
+  atIcon: require("../Assets/Images/atIcon.png"),
+  settingsIcon: require("../Assets/Images/settingsIcon.png")
 };
 
 export default images;  
