@@ -8,7 +8,7 @@ import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import images from "../../constant/images";
 
-
+// ─── Types ────────────────────────────────────────────────────────────────────
 
 type RootStackParamList = {
   DealsCaseDetails: {
@@ -27,7 +27,7 @@ type RootStackParamList = {
 type RouteProps = RouteProp<RootStackParamList, "DealsCaseDetails">;
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "DealsCaseDetails">;
 
-
+// ─── Mock Data ────────────────────────────────────────────────────────────────
 
 const decisionInfoData = [
   { label: "Funded Amount",         value: "$90,000.00"  },
@@ -74,9 +74,14 @@ const notesData = [
   },
 ];
 
+
+
+
+
+
 const TABS = ["Decision Info", "Settlement Info", "Treatment", "Notes"];
 
-
+// ─── Helper ───────────────────────────────────────────────────────────────────
 
 const getStatusColor = (status: string) => {
   if (status === "Rejected")     return "#E14D4D";
@@ -86,7 +91,7 @@ const getStatusColor = (status: string) => {
   return "#898989";
 };
 
-
+// ─── Components ───────────────────────────────────────────────────────────────
 
 const InfoRow = ({ label, value, isLast = false }: { label: string; value: string; isLast?: boolean }) => (
   <View className={`flex-row justify-between py-3 ${!isLast ? "border-b border-[#F0F0F0]" : ""}`}>
@@ -130,6 +135,7 @@ const NoteCard = ({ item }: { item: typeof notesData[0] }) => (
 );
 
 
+// ─── Main Screen ──────────────────────────────────────────────────────────────
 
 export default function DealsCaseDetails() {
   const navigation = useNavigation<NavigationProp>();
