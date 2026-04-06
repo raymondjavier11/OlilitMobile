@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Svg, { Path, Line, Polyline } from "react-native-svg";
+import SortFilterModal from "./SortFilterModal";
 import images from "../../constant/images";
 
 
@@ -43,6 +44,7 @@ type RootStackParamList = {
 
 
 const FILTER_OPTIONS: string[] = ["All Deals", "Processing", "UnderWriting"];
+
 
 
 
@@ -111,15 +113,16 @@ const getStatusColor = (status: string) => {
 
 
 
-const Header = () => (
+const Header = ({ onFilterPress }: { onFilterPress: () => void }) =>  (
   <View className="flex-row items-center justify-between bg-white px-4 py-3 border-b border-[#E0E0E0]">
     <Image source={images.logo} style={{ height: 36, width: 140 }} resizeMode="contain" />
     <View className="flex-row items-center gap-x-1">
       <TouchableOpacity className="p-2">
         <Image source={images.Notif} style={{ width: 30, height: 30 }} resizeMode="contain" />
       </TouchableOpacity>
-      <TouchableOpacity className="p-2">
+      <TouchableOpacity className="p-2"  onPress={onFilterPress}>
         <Image source={images.filterIcon} style={{ width: 18, height: 18 }} resizeMode="contain" />
+        
       </TouchableOpacity>
     </View>
   </View>
@@ -227,6 +230,7 @@ const CaseCard = ({ item }: { item: CaseItem }) => {
 
 
 export default function Deals() {
+    const [showSortFilter, setShowSortFilter] = useState(false);
   const [searchQuery, setSearchQuery]       = useState("");
   const [showDropdown, setShowDropdown]     = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("All Deals");
@@ -240,7 +244,7 @@ export default function Deals() {
   return (
     <SafeAreaView className="flex-1 bg-white">
 
-      <Header />
+      <Header onFilterPress={() => setShowSortFilter(true)} />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -330,7 +334,17 @@ export default function Deals() {
           onPress={() => setShowDropdown(false)}
         />
       )}
+          <SortFilterModal
+      visible={showSortFilter}
+      onClose={() => setShowSortFilter(false)}
+      onApply={(sort, filter) => {
+        console.log(sort, filter);
+        setShowSortFilter(false);
+      }}
+    />
 
     </SafeAreaView>
+    
   );
+  
 }
