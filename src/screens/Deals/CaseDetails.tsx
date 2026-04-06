@@ -6,9 +6,17 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import Svg, { Path } from "react-native-svg";
 import images from "../../constant/images";
+import StatusModal from "./StatusModal";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
+
+type StatusOption =
+  | "Hold" | "Lead" | "Sent IP Intake" | "Received IP Intake"
+  | "IP Convo" | "Sent Atty Intake" | "Received Atty Intake"
+  | "Attorney Convo" | "UW Review" | "Approved" | "IP Completed Docs"
+  | "Atty Completed Docs" | "Olilit Completed Docs" | "Ready to Fund" | "Decline";
 
 type RootStackParamList = {
   DealsCaseDetails: {
@@ -74,20 +82,19 @@ const notesData = [
   },
 ];
 
-
-
-
-
-
 const TABS = ["Decision Info", "Settlement Info", "Treatment", "Notes"];
 
 // ─── Helper ───────────────────────────────────────────────────────────────────
 
 const getStatusColor = (status: string) => {
-  if (status === "Rejected")     return "#E14D4D";
-  if (status === "Approved")     return "#8BC240";
-  if (status === "Pending")      return "#FF9500";
-  if (status === "Under Review") return "#5856D6";
+  if (status === "Rejected")      return "#E14D4D";
+  if (status === "Approved")      return "#8BC240";
+  if (status === "Pending")       return "#FF9500";
+  if (status === "Under Review")  return "#5856D6";
+  if (status === "Hold")          return "#FF9500";
+  if (status === "Lead")          return "#007AFF";
+  if (status === "Ready to Fund") return "#8BC240";
+  if (status === "Decline")       return "#E14D4D";
   return "#898989";
 };
 
@@ -134,31 +141,29 @@ const NoteCard = ({ item }: { item: typeof notesData[0] }) => (
   </View>
 );
 
-
 // ─── Main Screen ──────────────────────────────────────────────────────────────
 
 export default function DealsCaseDetails() {
   const navigation = useNavigation<NavigationProp>();
   const route      = useRoute<RouteProps>();
-  const { clientName, caseNumber, amount, status, tags, dateOfLoss, dateReceived, stageTime } = route.params;
+  const { clientName, caseNumber, amount, tags, dateOfLoss, dateReceived, stageTime } = route.params;
 
-  const [activeTab, setActiveTab]       = useState("Decision Info");
-  const [noteText, setNoteText]         = useState("");
-  const [isScrolling, setIsScrolling]   = useState(false);
+  // ── Local status state — initialized from route params, updated by StatusModal ──
+  const [status, setStatus] = useState<string>(route.params.status);
+
+  // ── StatusModal ──
+  const [showStatusModal, setShowStatusModal] = useState(false);
+
+  // ── Tabs & scroll ──
+  const [activeTab, setActiveTab]         = useState("Decision Info");
+  const [noteText, setNoteText]           = useState("");
+  const [isScrolling, setIsScrolling]     = useState(false);
   const [showStickyTab, setShowStickyTab] = useState(false);
 
   const summaryBottom = useRef(0);
-
   const scrollRef     = useRef<ScrollView>(null);
-  const decisionRef   = useRef<any>(null);
-  const settlementRef = useRef<any>(null);
-  const treatmentRef  = useRef<any>(null);
-  const notesRef      = useRef<any>(null);
+  const offsets       = useRef({ decision: 0, settlement: 0, treatment: 0, notes: 0 });
 
-  // Stored Y positions — set via onLayout, relative to ScrollView content
-  const offsets = useRef({ decision: 0, settlement: 0, treatment: 0, notes: 0 });
-
-  // Auto-highlight tab based on scroll position
   const handleScroll = (event: any) => {
     const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
     const scrollY    = contentOffset.y;
@@ -166,12 +171,10 @@ export default function DealsCaseDetails() {
     const buffer     = 60;
     const o          = offsets.current;
 
-    // Show sticky tab bar pag nalagpasan na ang summary
     setShowStickyTab(scrollY > summaryBottom.current);
 
     if (isScrolling) return;
 
-    // Auto-highlight
     if (scrollY >= maxScrollY - 10) {
       setActiveTab("Notes");
     } else if (o.notes > 0 && scrollY >= o.notes - buffer) {
@@ -185,7 +188,6 @@ export default function DealsCaseDetails() {
     }
   };
 
-  // Scroll to section on tab press — disable auto-highlight while scrolling
   const scrollToSection = (tab: string) => {
     const map: Record<string, number> = {
       "Decision Info":   offsets.current.decision,
@@ -196,10 +198,27 @@ export default function DealsCaseDetails() {
     setActiveTab(tab);
     setIsScrolling(true);
     scrollRef.current?.scrollTo({ y: (map[tab] ?? 0) - 10, animated: true });
-
-    // Re-enable auto-highlight after scroll animation finishes
     setTimeout(() => setIsScrolling(false), 600);
   };
+
+  // ── Tab bar (reused in two positions) ──
+  const TabBar = () => (
+    <View className="flex-row border-b-2 border-[#E0E0E0] bg-white mb-2">
+      {TABS.map((tab) => (
+        <TouchableOpacity
+          key={tab}
+          onPress={() => scrollToSection(tab)}
+          className="flex-1 items-center pb-3 pt-2">
+          <Text className={`text-[10px] font-semibold ${activeTab === tab ? "text-[#2E7D32]" : "text-[#9E9E9E]"}`}>
+            {tab}
+          </Text>
+          {activeTab === tab && (
+            <View className="absolute bottom-0 left-0 right-0 bg-[#2E7D32]" style={{ height: 2 }} />
+          )}
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
 
   return (
     <SafeAreaView className="flex-1 bg-[#F5F5F5]">
@@ -217,24 +236,8 @@ export default function DealsCaseDetails() {
         <View className="w-[44px]" />
       </View>
 
-      {/* ── Tab Bar — sticky pag nalagpasan na ang summary ── */}
-      {showStickyTab && (
-        <View className="flex-row border-b-2 border-[#E0E0E0] bg-white">
-          {TABS.map((tab) => (
-            <TouchableOpacity
-              key={tab}
-              onPress={() => scrollToSection(tab)}
-              className="flex-1 items-center pb-3 pt-2">
-              <Text className={`text-[10px] font-semibold ${activeTab === tab ? "text-[#2E7D32]" : "text-[#9E9E9E]"}`}>
-                {tab}
-              </Text>
-              {activeTab === tab && (
-                <View className="absolute bottom-0 left-0 right-0 bg-[#2E7D32]" style={{ height: 2 }} />
-              )}
-            </TouchableOpacity>
-          ))}
-        </View>
-      )}
+      {/* ── Sticky Tab Bar ── */}
+      {showStickyTab && <TabBar />}
 
       <ScrollView
         ref={scrollRef}
@@ -252,11 +255,31 @@ export default function DealsCaseDetails() {
           }}
           style={{ elevation: 4, shadowColor: "#888", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.06, shadowRadius: 10 }}>
 
+          {/* Title + tappable status badge */}
           <View className="flex-row justify-between items-center mb-3">
             <Text className="text-base font-bold text-[#121112]">Summary</Text>
-            <View style={{ backgroundColor: getStatusColor(status) }} className="rounded-full px-3 py-1">
-              <Text className="text-xs font-semibold text-white">{status}</Text>
-            </View>
+
+            {/* Tap to open StatusModal */}
+            <TouchableOpacity
+              activeOpacity={0.75}
+              onPress={() => setShowStatusModal(true)}>
+              <View
+                style={{ backgroundColor: getStatusColor(status) }}
+                className="rounded-full px-3 py-1 flex-row items-center gap-x-1.5">
+                <Text className="text-xs font-semibold text-white">{status}</Text>
+                {/* Small pencil icon as edit hint */}
+                <Svg width={10} height={10} viewBox="0 0 24 24" fill="none">
+                  <Path
+                    d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                    stroke="#FFFFFF" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"
+                  />
+                  <Path
+                    d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                    stroke="#FFFFFF" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"
+                  />
+                </Svg>
+              </View>
+            </TouchableOpacity>
           </View>
 
           <View className="flex-row justify-between items-start mb-1">
@@ -303,50 +326,26 @@ export default function DealsCaseDetails() {
           </View>
         </View>
 
-        {/* ── Tab Bar — visible below summary before scrolling ── */}
-        {!showStickyTab && (
-          <View className="flex-row border-b-2 border-[#E0E0E0] bg-white mb-2">
-            {TABS.map((tab) => (
-              <TouchableOpacity
-                key={tab}
-                onPress={() => scrollToSection(tab)}
-                className="flex-1 items-center pb-3 pt-2">
-                <Text className={`text-[10px] font-semibold ${activeTab === tab ? "text-[#2E7D32]" : "text-[#9E9E9E]"}`}>
-                  {tab}
-                </Text>
-                {activeTab === tab && (
-                  <View className="absolute bottom-0 left-0 right-0 bg-[#2E7D32]" style={{ height: 2 }} />
-                )}
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
+        {/* ── Inline Tab Bar (before sticky kicks in) ── */}
+        {!showStickyTab && <TabBar />}
 
         {/* ── Decision Info ── */}
-        <View
-          ref={decisionRef}
-          onLayout={(e) => { offsets.current.decision = e.nativeEvent.layout.y; }}>
+        <View onLayout={(e) => { offsets.current.decision = e.nativeEvent.layout.y; }}>
           <SectionCard title="Decision Info" data={decisionInfoData} />
         </View>
 
         {/* ── Settlement Info ── */}
-        <View
-          ref={settlementRef}
-          onLayout={(e) => { offsets.current.settlement = e.nativeEvent.layout.y; }}>
+        <View onLayout={(e) => { offsets.current.settlement = e.nativeEvent.layout.y; }}>
           <SectionCard title="Settlement Info" data={settlementInfoData} />
         </View>
 
         {/* ── Treatment ── */}
-        <View
-          ref={treatmentRef}
-          onLayout={(e) => { offsets.current.treatment = e.nativeEvent.layout.y; }}>
+        <View onLayout={(e) => { offsets.current.treatment = e.nativeEvent.layout.y; }}>
           <SectionCard title="Treatment" data={treatmentData} />
         </View>
 
         {/* ── Notes ── */}
-        <View
-          ref={notesRef}
-          onLayout={(e) => { offsets.current.notes = e.nativeEvent.layout.y; }}>
+        <View onLayout={(e) => { offsets.current.notes = e.nativeEvent.layout.y; }}>
           <Text className="text-base font-bold text-[#121112] mb-3">Notes</Text>
           {notesData.map((note) => (
             <NoteCard key={note.id} item={note} />
@@ -373,13 +372,26 @@ export default function DealsCaseDetails() {
             </TouchableOpacity>
           </View>
         ) : (
-          <TouchableOpacity
-            className="h-14 rounded-2xl bg-[#8BC240] items-center justify-center"
-            activeOpacity={0.8}>
-            <Text className="text-white text-base font-semibold">Update Actions</Text>
-          </TouchableOpacity>
+         <TouchableOpacity
+  className="h-14 rounded-2xl bg-[#8BC240] items-center justify-center"
+  activeOpacity={0.8}
+  onPress={() => setShowStatusModal(true)}  // ← idagdag ito
+>
+  <Text className="text-white text-base font-semibold">Update Actions</Text>
+</TouchableOpacity>
         )}
       </View>
+
+      {/* ── Status Modal ── */}
+      <StatusModal
+        visible={showStatusModal}
+        currentStatus={status as StatusOption}
+        onClose={() => setShowStatusModal(false)}
+        onSave={(newStatus) => {
+          setStatus(newStatus);
+          setShowStatusModal(false);
+        }}
+      />
 
     </SafeAreaView>
   );
