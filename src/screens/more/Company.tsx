@@ -636,6 +636,7 @@ export default function Company() {
         </Animated.View>
 
       </SafeAreaView>
+      
     </PaperProvider>
   );
 }
