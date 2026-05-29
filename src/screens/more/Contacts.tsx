@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import images from "../../constant/images";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { Provider as PaperProvider } from "react-native-paper";
@@ -13,11 +13,7 @@ import { Animated } from "react-native";
 
 type RootStackParamList = {
   ContactsDetails: {
-    name: string;
-    phone: string;
-    address: string;
-    type: string;
-    personName: string
+    id: string;
   };
 };
 const calendarTheme = {
@@ -29,6 +25,16 @@ const calendarTheme = {
     text: "#1f2937",
     placeholder: "#9CA3AF",
   },
+};
+
+type Contact = {
+  _id: string;
+  personName: string;
+  name: string;
+  type: string;
+  phone: string;
+  address: string;
+  date: string;
 };
 
 
@@ -45,6 +51,18 @@ export default function Contacts() {
 
   type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
   const navigation = useNavigation<NavigationProp>();
+
+  useEffect(() => {
+  fetch("http://10.0.2.2:5000/api/contacts")
+    .then((res) => res.json())
+    .then((data) => {
+      setCompanies(data);
+      setFilteredCompanies(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}, []);
 
   const resetFilter = () => {
   
@@ -155,56 +173,8 @@ export default function Contacts() {
     { label: "Negotiator", value: "Negotiator" },
   ];
 
-  const companies = [
-    {
-      id: 1,
-      personName: "Choi, Kenneth",
-      name: "ABCDE Company",
-      type: "Injured Party",
-      phone: "61239001123",
-      address: "3578 Hiney Road, Nevada, Las Vegas",
-      date: "December 20, 2025. 03:31:11 PM",
-    },
-    {
-      id: 2,
-      personName: "Raymond",
-      name: "Global Tech Ltd.",
-      type: "Injured Party",
-      phone: "98765432100",
-      address: "245 Sunset Blvd, California, Los Angeles",
-      date: "January 12, 2026. 10:20:45 AM",
-    },
-    {
-      id: 3,
-      personName: "Javier",
-      name: "Prime Holdings",
-      type: "Neurology",
-      phone: "44556677889",
-      address: "120 King Street, New York, Manhattan",
-      date: "February 05, 2026. 08:15:30 PM",
-    },
-    {
-      id: 4,
-      personName: "Agapay",
-      name: "Funding Experts",
-      type: "Injured Party",
-      phone: "33445566778",
-      address: "55 Wall Street, New York, Manhattan",
-      date: "March 01, 2026. 09:45:00 AM",
-    },
-    {
-      id: 5,
-      personName: "Israel",
-      name: "ABCD Company",
-      type: "Law Firm",
-      phone: "33445566778",
-      address: "55 Wall Street, New York, Manhattan",
-      date: "March 01, 2026. 09:45:00 AM",
-    },
-    
-  ];
-
-  const [filteredCompanies, setFilteredCompanies] = useState(companies);
+  const [companies, setCompanies] = useState<Contact[]>([]);
+  const [filteredCompanies, setFilteredCompanies] = useState<Contact[]>([]);
 
     const applyFilter = () => {
     if (!companyType) return; 
@@ -333,7 +303,7 @@ export default function Contacts() {
           ) : (
             filteredCompanies.map((company) => (
               <View
-                key={company.id}
+                key={company._id}
                 className="rounded-[16px] border border-[#F4F4F4] px-[20px] py-[16px] bg-[#FFFFFF] mt-5"
                 style={{ shadowColor: "#888",shadowOffset: { width: 0, height: 10 },shadowOpacity: 0.05,
                   shadowRadius: 10, elevation: 4, }} >
@@ -371,18 +341,14 @@ export default function Contacts() {
                     source={images.calendarIcon} 
                     resizeMode="contain"/>
                   <Text className="font-jakarta-medium text-[12px]">
-                    {company.date}
+                    {new Date(company.date).toLocaleString()}
                   </Text>
                 </View>
 
                 <Pressable
                   onPress={() =>
                     navigation.navigate("ContactsDetails", {
-                      name: company.name,
-                      phone: company.phone,
-                      address: company.address,
-                      type: company.type,
-                      personName: company.personName
+                      id: company._id
                     })
                   }
                   className="rounded-[16px] bg-[#FFFFFF] border border-[#8BC240] px-[20px] py-[16px] items-center mt-6">

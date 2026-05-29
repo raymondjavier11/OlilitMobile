@@ -10,13 +10,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 type RootStackParamList = {
   PayoutsDetails: {
-    name: string;
-    id: string;
-    type: string; 
+    clientName: string;
+    caseId: string;
+    type: string;
     status: string;
-    value: string;
-    date: string;
+    value: number;
+    createdAt: string;
   };
+
   ApproveComplete: {
   id: string;
   name: string;
@@ -125,7 +126,7 @@ export default function PayoutsDetails() {
   const route = useRoute<RouteProps>();
   const navigation = useNavigation<NavigationProp>();
 
-  const { name, id, type, status, value, date } = route.params;
+  const {clientName,caseId,type,status,value, createdAt} = route.params;
 
   const getStatusColor = () => {
     if (status === "Rejected") return "#E14D4D";
@@ -179,7 +180,7 @@ export default function PayoutsDetails() {
         </View>
 
         <View className="flex-row justify-between ">
-         <Text className="font-jakarta-semibold text-[14px]">{name}</Text>
+         <Text className="font-jakarta-semibold text-[14px]">{clientName}</Text>
           <Text className="text-[14px] font-jakarta-semibold">{value}</Text>
         </View>
 
@@ -285,10 +286,10 @@ export default function PayoutsDetails() {
               </Text>
 
               <Text className="text-[14px] text-[#666] mb-[24px]">
-                Are you sure you want to approve payout {id} - {name} | {type} | Amount: {value}
+                Are you sure you want to approve payout {caseId} - {clientName} | {type} | Amount: {value}
               </Text>
 
-              <Pressable onPress={() => navigation.navigate("ApproveComplete", {id: id,name: name, date: date,transactionId: "305135699059766",})}
+              <Pressable onPress={() => navigation.navigate("ApproveComplete", {id: caseId, name: clientName,date: createdAt,transactionId: "305135699059766",})}
                 className="h-[56px] rounded-[16px] bg-[#8BC240] items-center justify-center mb-[10px]">
                 <Text className="text-white text-[16px] font-jakarta-semibold">
                   Approve
@@ -321,12 +322,12 @@ export default function PayoutsDetails() {
               </Text>
 
               <Text className="text-[14px] text-[#666] mb-[24px]">
-                Are you sure you want to reject payout {id} - {name} | {type} | Amount: {value}?
+                Are you sure you want to reject payout {caseId} - {clientName} | {type} | Amount: {value}?
               </Text>
 
               <Pressable
                 onPress={() =>
-                  navigation.navigate("RejectComplete", {id: id, name: name,date: date,transactionId: "305135699059766",})}
+                  navigation.navigate("RejectComplete", {id: caseId, name: clientName,date: createdAt,transactionId: "305135699059766",})}
                 className="h-[56px] rounded-[16px] bg-[#E14D4D] items-center justify-center mb-[10px]">
                 <Text className="text-white text-[16px] font-jakarta-semibold">
                   Reject

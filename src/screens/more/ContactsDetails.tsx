@@ -6,16 +6,27 @@ import { NativeSyntheticEvent, NativeScrollEvent } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { RouteProp } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useEffect } from "react";
 
 type RootStackParamList = {
   ContactsDetails: {
-    name: string;
-    phone: string;
-    address: string;
-    type: string;
-    personName: string
+    id: string;
   };
 };
+
+type Contact = {
+  _id: string;
+  personName: string;
+  name: string;
+  type: string;
+  phone: string;
+  address: string;
+  email?: string;
+  mobile?: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
 
 type RouteProps = RouteProp<RootStackParamList, "ContactsDetails">;
 
@@ -23,7 +34,7 @@ export default function ContactsDetails() {
 
   const navigation = useNavigation();
   const route = useRoute<RouteProps>();
-  const { name, phone, address,type,personName } = route.params;
+  const { id } = route.params;
 
   const sectionPositions = useRef({
   general: 0,
@@ -31,6 +42,19 @@ export default function ContactsDetails() {
   contact: 0,
   notes: 0,
 });
+
+const [contact, setContact] = useState<Contact | null>(null);
+
+useEffect(() => {
+  fetch(`http://10.0.2.2:5000/api/contacts/${id}`)
+    .then((res) => res.json())
+    .then((data) => {
+      setContact(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}, []);
 
 const isScrollingByTab = useRef(false);
 
@@ -89,41 +113,6 @@ const isScrollingByTab = useRef(false);
     setActiveTab(tab);
     };
 
-    const contacts = [
-    {
-        id: 1,
-        name: "Choi, Kenneth",
-        role: "Injured Party",
-        company: "ABC Company",
-        phone: "61239001123",
-        date: "December 20 2025",
-    },
-    {
-        id: 2,
-        name: "Garcia, Maria",
-        role: "Witness",
-        company: "Global Tech Ltd.",
-        phone: "98765432100",
-        date: "January 10 2026",
-    },
-    {
-        id: 3,
-        name: "Smith, John",
-        role: "Claimant",
-        company: "Prime Holdings",
-        phone: "44556677889",
-        date: "February 02 2026",
-    },
-    {
-        id: 4,
-        name: "Lopez, Angela",
-        role: "Adjuster",
-        company: "Everest Insurance",
-        phone: "22334455667",
-        date: "March 05 2026",
-    },
-    ];
-
 return (
   <SafeAreaView className="flex-1 bg-white">
     <View className="flex-1 bg-white ">
@@ -156,19 +145,19 @@ return (
                     shadowRadius: 10, elevation: 8,}}>
 
                 <Text className="font-jakarta-medium text-[14px]">
-                        {personName}
+                        {contact?.personName}
                     </Text>
 
                 <View className="flex-row justify-between items-center">
                     <Text className="font-jakarta-medium text-[14px]">
-                        {name}
+                        {contact?.name}
                     </Text>
 
                     <View className="flex-row items-center gap-2 rounded-[12px] bg-[#8BC2401A] p-[8px]">
                     <Image className="w-[10px] h-[10px]" 
                         source={images.company} resizeMode="contain"/>
                     <Text className="font-jakarta-medium text-[10px]">
-                        {type}
+                        {contact?.type}
                     </Text>
                     </View>
                 </View>     
@@ -177,7 +166,7 @@ return (
                     <Image className="w-[12.5px] h-[12.5px]" 
                         source={images.phoneIcon} resizeMode="contain"/>
                     <Text className="font-jakarta-medium text-[12px]">
-                        {phone}
+                        {contact?.phone}
                     </Text>
                 </View>
 

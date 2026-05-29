@@ -1,11 +1,21 @@
 import { View, Text, Image, TextInput, FlatList, Pressable } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PayoutCard from './PayoutCard'
 import images from '../../constant/images'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Modal } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { Animated } from "react-native";
+
+type Payout = {
+  _id: string;
+  clientName: string;
+  caseId: string;
+  type: string;
+  status: string;
+  value: number;
+  createdAt: string;
+};
 
 export default function Payouts() {
 
@@ -28,78 +38,36 @@ export default function Payouts() {
   }>({});
 
   const showBanner = () => {
-  Animated.timing(slideAnim, {
-    toValue: 0, // baba
-    duration: 300,
-    useNativeDriver: true,
-  }).start();
-
-  setTimeout(() => {
     Animated.timing(slideAnim, {
-      toValue: -100,
+      toValue: 0,
       duration: 300,
       useNativeDriver: true,
     }).start();
-  }, 2000);
-};
 
-  const payouts = [
-    {
-      name: "Choi, Kenneth",
-      id: "51987",
-      type: "pre-settlement funding",
-      status: "Rejected",
-      value: "$40,000.00",
-      date: "2025-05-19 03:31:11 PM",
-    },
-    {
-      name: "Choi, Kenneth",
-      id: "51987",
-      type: "pre-settlement funding",
-      status: "Pending",
-      value: "$40,000.00",
-      date: "2025-05-19 03:31:11 PM",
-    },
-    {
-      name: "Javier",
-      id: "51387",
-      type: "pre-settlement funding",
-      status: "Issued",
-      value: "$40,000.00",
-      date: "2025-05-19 03:31:11 PM",
-    },
-    {
-      name: "Raymond",
-      id: "21987",
-      type: "pre-settlement funding",
-      status: "Pending",
-      value: "$40,000.00",
-      date: "2025-05-19 03:31:11 PM",
-    },
-    {
-      name: "Israel",
-      id: "31987",
-      type: "pre-settlement funding",
-      status: "Rejected",
-      value: "$40,000.00",
-      date: "2025-05-19 03:31:11 PM",
-    },
-    {
-      name: "James",
-      id: "51981",
-      type: "pre-settlement funding",
-      status: "Issued",
-      value: "$40,000.00",
-      date: "2025-05-19 03:31:11 PM",
-    },  
-  ]
+    setTimeout(() => {
+      Animated.timing(slideAnim, {
+        toValue: -100,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }, 2000);
+  };
 
-  const filteredPayouts = payouts.filter((item) => {
+  const [payouts, setPayouts] = useState<Payout[]>([]);
+
+  useEffect(() => {
+    fetch("http://10.0.2.2:5000/api/payouts")
+      .then(res => res.json())
+      .then(data => setPayouts(data))
+      .catch(err => console.log(err));
+  }, []);
+
+  const filteredPayouts = payouts.filter((item: Payout) => {
     const search = searchText.toLowerCase();
 
     const matchSearch =
-      item.name.toLowerCase().includes(search) ||
-      item.id.toLowerCase().includes(search);
+      item.clientName.toLowerCase().includes(search) ||
+      item.caseId.toLowerCase().includes(search);
 
     const matchStatus = selectedStatus
       ? item.status === selectedStatus
@@ -108,7 +76,7 @@ export default function Payouts() {
     let matchDate = true;
 
     if (range.startDate && range.endDate) {
-      const itemDate = new Date(item.date);
+      const itemDate = new Date(item.createdAt);
 
       matchDate =
         itemDate >= range.startDate &&
@@ -172,7 +140,7 @@ export default function Payouts() {
 
         <FlatList
           data={filteredPayouts}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item) => item._id}
           renderItem={({ item }) => ( <PayoutCard {...item} /> )}
           contentContainerStyle={{
             gap: 10,
@@ -332,20 +300,20 @@ export default function Payouts() {
           alignItems: "center",
         }}>
       
-            <Text style={{ color: "white", fontWeight: "600" }}>
-               Filters applied
-            </Text>
+          <Text style={{ color: "white", fontWeight: "600" }}>
+            Filters applied
+          </Text>
       
-            <Pressable
-              onPress={() =>
-                Animated.timing(slideAnim, {
-                  toValue: -100,
-                  duration: 300,
-                  useNativeDriver: true,
-            }).start()
+          <Pressable
+            onPress={() =>
+              Animated.timing(slideAnim, {
+                toValue: -100,
+                duration: 300,
+                useNativeDriver: true,
+              }).start()
             }>
-             <Text style={{ color: "white", fontSize: 18 }}>✕</Text>
-            </Pressable>
+            <Text style={{ color: "white", fontSize: 18 }}>✕</Text>
+          </Pressable>
       
       </Animated.View>
 
