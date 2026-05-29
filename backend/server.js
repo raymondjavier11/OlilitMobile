@@ -3,7 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const User = require("./models/users");
-const Deal = require("./models/deals");
+const Deal = require("./models/deal");
 const Payout = require("./models/payouts");      
 const payoutRoutes = require("./routes/payouts"); 
 const userRoutes = require("./routes/users");
@@ -11,6 +11,9 @@ const companyRoutes = require("./routes/companies");
 const caseDetailsRoutes = require("./routes/caseDetails");
 const Contact = require("./models/contact");
 const contactRoutes = require("./routes/contacts");
+const dealRoutes = require("./routes/dealRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
+
 
 dotenv.config();
 connectDB();
@@ -38,6 +41,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/companies", companyRoutes);
 app.use("/api/case-details", caseDetailsRoutes);
 app.use("/api/contacts", contactRoutes);
+app.use("/deal", dealRoutes);
+app.use("/dashboard", dashboardRoutes);
 app.get("/api/contacts", async (req, res) => {
 
   try {
